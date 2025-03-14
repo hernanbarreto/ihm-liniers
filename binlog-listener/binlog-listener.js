@@ -1,15 +1,17 @@
+require('dotenv').config();
 const MySQLEvents = require('@rodrigogs/mysql-events');
 const mysql = require('mysql');  // Usa mysql en lugar de mysql2
 const WebSocket = require('ws');
 
 const DB_CONFIG = {
-    host: "localhost",
-    user: "root",
-    password: "@ats-liniers",
-    database: "ats_db"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,  
+    port: process.env.DB_PORT || 3306 
 };
 
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: process.env.PORT || 8080 });
 
 async function startBinlogListener() {
     const connection = mysql.createPool(DB_CONFIG);  // Usa un pool en lugar de una conexión directa
@@ -23,7 +25,6 @@ async function startBinlogListener() {
         expression: `${DB_CONFIG.database}.*`,
         statement: MySQLEvents.STATEMENTS.ALL,
         onEvent: event => {
-            console.log("🔄 Cambio detectado:", event);
             wss.clients.forEach(client => {
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(JSON.stringify(event));

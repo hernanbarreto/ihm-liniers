@@ -27,8 +27,8 @@ def start_nextjs():
     return subprocess.Popen([r"C:\Users\hernan.barreto\Documents\node\npm.cmd", "start"])
 
 def start_node():
-    node_path = r"C:\Users\hernan.barreto\OneDrive - INGEROP\CBTC COMS\99 Misc\DATOS TRENES\ATS\ats-liniers\binlog-listener"
-    script_path = os.path.join(node_path, "binlog-listener.js")
+    node_path = r"C:\Users\hernan.barreto\OneDrive - INGEROP\CBTC COMS\99 Misc\DATOS TRENES\ATS\ats-liniers"
+    script_path = os.path.join(node_path, "binlog-listener\binlog-listener.js")
     return subprocess.Popen([r"C:\Users\hernan.barreto\Documents\node\node", script_path],cwd=node_path)
 
 def open_browser():    
