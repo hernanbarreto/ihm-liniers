@@ -19,7 +19,8 @@ def check_and_kill_process_on_port(ports):
 
 def start_mysql():
     mysql_command = r"C:\Users\hernan.barreto\Documents\MySQL\bin\mysqld.exe"
-    return subprocess.Popen(mysql_command)
+    command_with_args = [mysql_command, "--server-id=1", "--log-bin=mysql-bin", "--binlog-format=ROW"]
+    return subprocess.Popen(command_with_args)
 
 def start_nextjs():
     nextjs_path = r"C:\Users\hernan.barreto\OneDrive - INGEROP\CBTC COMS\99 Misc\DATOS TRENES\ATS\ats-liniers"
