@@ -28,8 +28,8 @@ const wss = new WebSocket.Server({ host: '0.0.0.0', port: process.env.PORT || 80
 const MODE = process.env.MODE || 'master';  // 'master' o 'slave'
 const REPLICATION_ENABLED = process.env.REPLICATION_ENABLED === 'true'; // Convertir a booleano
 const DB_CONFIG = MODE === 'master' ? DB_CONFIG_MASTER : DB_CONFIG_SLAVE;
-const connection = mysql.createPool(DB_CONFIG);
 
+const connection = mysql.createPool(DB_CONFIG);
 // Almacenamiento local de cambios pendientes
 const PENDING_CHANGES_FILE = path.join(__dirname, 'pending_changes.json');
 

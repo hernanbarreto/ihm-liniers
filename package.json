@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.7",
     "@mui/styles": "^6.4.7",
+    "@react-three/drei": "^10.0.5",
     "@rodrigogs/mysql-events": "^0.6.0",
     "@svgr/webpack": "^8.1.0",
     "bcryptjs": "^3.0.2",
@@ -23,8 +24,11 @@
     "next": "15.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-svg-pan-zoom": "^3.13.1",
     "react-virtuoso": "^4.12.5",
+    "react-zoom-pan-pinch": "^3.7.0",
     "reactfire": "^4.2.3",
+    "three": "^0.174.0",
     "ws": "^8.18.1"
   }
 }

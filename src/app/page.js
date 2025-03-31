@@ -160,7 +160,7 @@ export default function Home() {
   }
 
   const userTable = (
-    <Table size="small" sx={{ backgroundColor: "#424242", borderRadius: "8px", width: "100%" }}>
+    <Table size="small" sx={{ backgroundColor: "#424242", borderRadius: "8px", width: "100%"}}>
       <TableBody>
         <TableRow>
           <TableCell sx={{ color: "white", padding: "4px 8px" }}>Usuario 1</TableCell>
@@ -174,9 +174,118 @@ export default function Home() {
     </Table>
   );
 
+  {/*L: LIBRE*/}
+  {/*O: OCUPADO*/}
+  {/*SD: SIN DATOS*/}
+  {/*RA: RUTA ABSOLUTA*/}
+  {/*RM: RUTA MANIOBRA*/}
+  {/*DES: DESLIZAMIENTO*/}
+  {/*REQ: REQUERIDO*/}
+  const estadoCDV = {
+    "L":"#FFF212", 
+    "O":"#FF0000", 
+    "SD": "#808080", 
+    "RA": "#00FF00", 
+    "RM": "#A2CADF", 
+    "DES": "#800080",
+    "REQ": "#800080", 
+  };
+
+  {/*{L: true, O: false, SD: false, RA: false, RM: false, DES: false, REQ: false, X: false}*/}
+
+  const ArrayCDV = {
+    "3T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "5AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "9T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "7T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "11T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "24BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "24T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "20T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "14BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "18T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "22AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "30AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "VMT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "5BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "V6T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "13BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "P1T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "19CT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "21AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "15AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "21T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "19T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "15T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "19BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "14AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "10AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "10T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "6CT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "P2T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "12T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "19ET": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "21BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "14DT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "22T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "30T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "28AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "3AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "5T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "26T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "17T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "12BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "12AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "13T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "13AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "14T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "14CT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "19AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "6BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "6AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "6T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "8T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "19DT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "24AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+    "28T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
+  };
+
+  const ArrayMDC = {
+    "43": {N: true, R: false, F: false, M: false, ENC: false},
+    "39A": {N: true, R: false, F: false, M: false, ENC: false},
+    "39B": {N: true, R: false, F: false, M: false, ENC: false},
+    "49A": {N: true, R: false, F: false, M: false, ENC: false},
+    "49B": {N: true, R: false, F: false, M: false, ENC: false},
+    "17A": {N: true, R: false, F: false, M: false, ENC: false},
+    "17B": {N: true, R: false, F: false, M: false, ENC: false},
+    "40A": {N: true, R: false, F: false, M: false, ENC: false},
+    "40B": {N: true, R: false, F: false, M: false, ENC: false},
+    "54A": {N: true, R: false, F: false, M: false, ENC: false},
+    "54B": {N: true, R: false, F: false, M: false, ENC: false},
+    "38A": {N: true, R: false, F: false, M: false, ENC: false},
+    "38B": {N: true, R: false, F: false, M: false, ENC: false},
+    "21A": {N: true, R: false, F: false, M: false, ENC: false},
+    "21B": {N: true, R: false, F: false, M: false, ENC: false},
+    "23A": {N: true, R: false, F: false, M: false, ENC: false},
+    "23B": {N: true, R: false, F: false, M: false, ENC: false},
+    "31A": {N: true, R: false, F: false, M: false, ENC: false},
+    "31B": {N: true, R: false, F: false, M: false, ENC: false},
+    "32": {N: true, R: false, F: false, M: false, ENC: false},
+    "47": {N: true, R: false, F: false, M: false, ENC: false},
+    "26": {N: true, R: false, F: false, M: false, ENC: false},
+    "14A": {N: true, R: false, F: false, M: false, ENC: false},
+    "14B": {N: true, R: false, F: false, M: false, ENC: false},
+    "15A": {N: true, R: false, F: false, M: false, ENC: false},
+    "15B": {N: true, R: false, F: false, M: false, ENC: false},
+    "16A": {N: true, R: false, F: false, M: false, ENC: false},
+    "16B": {N: true, R: false, F: false, M: false, ENC: false},
+    "41A": {N: true, R: false, F: false, M: false, ENC: false},
+    "41B": {N: true, R: false, F: false, M: false, ENC: false},
+};
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100vh", backgroundColor: "black" }}>
-      <AppBar position="sticky" sx={{ backgroundColor: "#222a4f", padding: "0 16px", height: 120 }}>
+      <AppBar position="sticky" sx={{ backgroundColor: "#222a4f", padding: "0 16px", height: 120, userSelect: 'none'}}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: 120 }}>
           <Box sx={{ display: "flex", alignItems: "center", height: 120, width: "210px", backgroundColor: "#222a4f", paddingX: "10px" }}>
             <LogoCliente sx={{ maxWidth: "100%", height: "auto", objectFit: "contain" }} />
@@ -202,7 +311,7 @@ export default function Home() {
 
       <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", overflow: "hidden", paddingTop: 2 }}>
         {userRole === "operador" ? (
-          <Mimico className="w-full h-full object-contain" />
+          <Mimico className="w-full h-full object-contain" cdv_prin={ArrayCDV} mdc={ArrayMDC}/>
         ) : userRole === "admin" ? (
           <Box sx={{ width: "100%", overflow: "auto", height: "100%" }}>
             {userTable}
