@@ -1,5 +1,5 @@
 import * as React from "react"
-const Mimico = ({cdv_prin = {}, mdc = {},...props}) => {
+const Mimico = ({cdv_prin = {}, mdc = {}, sen_man = {},...props}) => {
 
 const estadoCDV = {
   "L":"#FFF212",
@@ -32,6 +32,48 @@ const getCDVColorCAM = (cdv, mdc, pos) => {
     else
     if (cdv.O) return estadoCDV["O"];
   }
+};
+
+const estadoSEN = {
+  "R":"#FF0000",
+  "G":"#00FF00",
+  "RF": "#000000",
+  "GF": "#000000",
+  "SD": "#808080",
+  "SA_SEM": "#000000",
+  "SA_STROKE": "#FFFFFF",
+  "CDV_O_SEM": "#000000",
+  "CDV_O_STROKE": "#FFFFFF",
+  "V": "#FF69FF",
+  "VF": "#000000",
+};
+
+const getColorSenMan = (sen) => {
+  if (sen.SD) return estadoSEN["SD"];
+  if (sen.R&&!sen.RF) return estadoSEN["R"];
+  if (sen.R&&sen.RF) return estadoSEN["RF"];
+  if (sen.G&&!sen.GF) return estadoSEN["G"];
+  if (sen.G&&sen.GF) return estadoSEN["GF"];
+};
+
+const getColorStrokeSenMan = (sen) => {
+  if (sen.SD) return estadoSEN["SD"];
+  if (sen.R) return estadoSEN["R"];
+  if (sen.G) return estadoSEN["G"];
+};
+
+const getColorSenManUsoComp = (sen) => {
+  if (sen.SD) return estadoSEN["SD"];
+  if (sen.SA) return estadoSEN["SA_SEM"];
+  if (sen.CDV_O) return estadoSEN["CDV_O_SEM"];
+  if (sen.V&&!sen.VF) return estadoSEN["V"];
+  if (sen.V&&sen.VF) return estadoSEN["VF"];
+};
+const getColorStrokeSenManUsoCom = (sen) => {
+  if (sen.SD) return estadoSEN["SD"];
+  if (sen.SA) return estadoSEN["SA_STROKE"];
+  if (sen.CDV_O) return estadoSEN["CDV_O_STROKE"];
+  if (sen.V) return estadoSEN["V"];
 };
 
 const handleLeftClick = (e) => {
@@ -7013,6 +7055,7 @@ return (
           strokeOpacity: 1,
         }}
       >
+        {/*PRINCIPAL LS3A*/}        
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
@@ -7028,6 +7071,20 @@ return (
           transform="translate(-5.238 16.647)"
         />
         <path
+          d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.5,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="translate(-0.738 16.647)"
+        />
+        <path
           d="M26.125 36.717v3.665-1.865h2.158"
           style={{
             fill: "none",
@@ -7041,6 +7098,7 @@ return (
           }}
           transform="translate(-5.238 16.647)"
         />
+        {/*PRINCIPAL LS3B*/}        
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
@@ -7054,6 +7112,20 @@ return (
             strokeOpacity: 1,
           }}
           transform="translate(-5.238 16.647)"
+        />
+        <path
+          d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.5,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="translate(-0.738 16.647)"
         />
         <path
           d="M26.866 33.83v4.246"
@@ -7084,7 +7156,23 @@ return (
           transform="translate(-5.238 16.647)"
         />
         <path
-          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
+          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
+          style={{
+            display: "inline",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 1.5 39.498 32.162)"
+        />
+        <path
+          d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
             display: "inline",
             fill: "red",
@@ -7759,12 +7847,13 @@ return (
           transform="matrix(-1.5 0 0 1.5 295.29 135.205)"
         />
       </g>
+      {/*MANIOBRA LS53*/}
       <path
         d="M99.921 199.465v1.863h.06a3.718 3.718 0 0 0 1.517-.418 3.63 3.63 0 0 0 1.013-.757 3.83 3.83 0 0 0 .77-1.144c.184-.425.28-.817.323-1.324l.007-.084h-3.69z"
         style={{
-          fill: "red",
+          fill: getColorSenMan(sen_man["LS53"]),
           fillOpacity: 1,
-          stroke: "#fff",
+          stroke: getColorStrokeSenMan(sen_man["LS53"]),
           strokeWidth: 0.774,
           strokeLinecap: "square",
           strokeLinejoin: "miter",
@@ -7780,9 +7869,9 @@ return (
         d="M99.253 199.465a1.469 1.469 0 1 1-2.938 0 1.469 1.469 0 0 1 2.938 0"
         style={{
           display: "inline",
-          fill: "#f0f",
+          fill: getColorSenManUsoComp(sen_man["LS53"]),
           fillOpacity: 1,
-          stroke: "#fff",
+          stroke: getColorStrokeSenManUsoCom(sen_man["LS53"]),
           strokeWidth: 0.562044,
           strokeLinecap: "round",
           strokeLinejoin: "round",
@@ -7797,7 +7886,7 @@ return (
         style={{
           display: "inline",
           fill: "none",
-          stroke: "#fff",
+          stroke: getColorStrokeSenMan(sen_man["LS53"]),
           strokeWidth: 0.5,
           strokeLinecap: "square",
           strokeLinejoin: "miter",
@@ -7807,6 +7896,7 @@ return (
         }}
         transform="translate(-3.486 -13.362)"
       />
+      {/*MANIOBRA LS53*/}
       <g
         style={{
           display: "inline",
@@ -7844,15 +7934,15 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {"2"}
+            {sen_man["LS50"].RUTA}
           </tspan>
         </text>
         <path
           d="M101.468 199.465v-1.863h-.06c-.1 0-.358.033-.534.07a3.718 3.718 0 0 0-.983.348 3.63 3.63 0 0 0-1.013.756 3.83 3.83 0 0 0-.77 1.145c-.184.425-.28.817-.323 1.324l-.007.083h3.69z"
           style={{
-            fill: "red",
+            fill: getColorSenMan(sen_man["LS50"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS50"]),
             strokeWidth: 0.774,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7869,7 +7959,7 @@ return (
           style={{
             display: "inline",
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS50"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7880,6 +7970,7 @@ return (
           transform="matrix(1 0 0 -1 58.95 373.901)"
         />
       </g>
+      {/*MANIOBRA LS51*/}
       <g
         style={{
           display: "inline",
@@ -7888,9 +7979,9 @@ return (
         <path
           d="M99.921 199.465v1.863h.06a3.718 3.718 0 0 0 1.517-.418 3.63 3.63 0 0 0 1.013-.757 3.83 3.83 0 0 0 .77-1.144c.184-.425.28-.817.323-1.324l.007-.084h-3.69z"
           style={{
-            fill: "red",
+            fill: getColorSenMan(sen_man["LS51"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS51"]),
             strokeWidth: 0.774,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7906,9 +7997,9 @@ return (
           d="M99.253 199.465a1.469 1.469 0 1 1-2.938 0 1.469 1.469 0 0 1 2.938 0"
           style={{
             display: "inline",
-            fill: "#f0f",
+            fill: getColorSenManUsoComp(sen_man["LS51"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenManUsoCom(sen_man["LS51"]),
             strokeWidth: 0.562044,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7923,7 +8014,7 @@ return (
           style={{
             display: "inline",
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS51"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7934,6 +8025,7 @@ return (
           transform="translate(-3.486 -43.442)"
         />
       </g>
+      {/*MANIOBRA LS59*/}
       <g
         style={{
           display: "inline",
@@ -7971,15 +8063,15 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {"2"}
+            {sen_man["LS59"].RUTA}
           </tspan>
         </text>
         <path
           d="M99.921 199.465v1.863h.06a3.718 3.718 0 0 0 1.517-.418 3.63 3.63 0 0 0 1.013-.757 3.83 3.83 0 0 0 .77-1.144c.184-.425.28-.817.323-1.324l.007-.084h-3.69z"
           style={{
-            fill: "red",
+            fill: getColorSenMan(sen_man["LS59"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS59"]),
             strokeWidth: 0.774,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7995,9 +8087,9 @@ return (
           d="M99.253 199.465a1.469 1.469 0 1 1-2.938 0 1.469 1.469 0 0 1 2.938 0"
           style={{
             display: "inline",
-            fill: "#f0f",
+            fill: getColorSenManUsoComp(sen_man["LS59"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenManUsoCom(sen_man["LS59"]),
             strokeWidth: 0.562044,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8012,7 +8104,7 @@ return (
           style={{
             display: "inline",
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS59"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8023,6 +8115,7 @@ return (
           transform="translate(140.21 -13.362)"
         />
       </g>
+      {/*MANIOBRA LS57*/}
       <g
         style={{
           display: "inline",
@@ -8059,15 +8152,15 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {"2"}
+            {sen_man["LS57"].RUTA}
           </tspan>
         </text>
         <path
           d="M99.921 199.465v1.863h.06a3.718 3.718 0 0 0 1.517-.418 3.63 3.63 0 0 0 1.013-.757 3.83 3.83 0 0 0 .77-1.144c.184-.425.28-.817.323-1.324l.007-.084h-3.69z"
           style={{
-            fill: "red",
+            fill: getColorSenMan(sen_man["LS57"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS57"]),
             strokeWidth: 0.774,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8083,9 +8176,9 @@ return (
           d="M99.253 199.465a1.469 1.469 0 1 1-2.938 0 1.469 1.469 0 0 1 2.938 0"
           style={{
             display: "inline",
-            fill: "#f0f",
+            fill: getColorSenManUsoComp(sen_man["LS57"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenManUsoCom(sen_man["LS57"]),
             strokeWidth: 0.562044,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8100,7 +8193,7 @@ return (
           style={{
             display: "inline",
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS57"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8111,6 +8204,7 @@ return (
           transform="translate(141.798 -43.496)"
         />
       </g>
+      {/*MANIOBRA LS54*/}
       <g
         style={{
           display: "inline",
@@ -8148,15 +8242,15 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {"3"}
+            {sen_man["LS54"].RUTA}
           </tspan>
         </text>
         <path
           d="M99.921 201.052v1.863h.06a3.718 3.718 0 0 0 1.517-.418 3.63 3.63 0 0 0 1.013-.757 3.83 3.83 0 0 0 .77-1.144c.184-.425.28-.817.323-1.324l.007-.083h-3.69z"
           style={{
-            fill: "red",
+            fill: getColorSenMan(sen_man["LS54"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS54"]),
             strokeWidth: 0.774,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8172,9 +8266,9 @@ return (
           d="M99.253 201.052a1.469 1.469 0 1 1-2.938 0 1.469 1.469 0 0 1 2.938 0"
           style={{
             display: "inline",
-            fill: "#f0f",
+            fill: getColorSenManUsoComp(sen_man["LS54"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenManUsoCom(sen_man["LS54"]),
             strokeWidth: 0.562044,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8189,7 +8283,7 @@ return (
           style={{
             display: "inline",
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS54"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8200,6 +8294,7 @@ return (
           transform="matrix(-1 0 0 1 405.825 -46.402)"
         />
       </g>
+      {/*SEÑAL TOPERA PUNTA PLATAFORMA VIA MERCADO*/}
       <g
         style={{
           display: "inline",
@@ -8240,6 +8335,7 @@ return (
           transform="matrix(-1.5 0 0 1.5 214.332 64.09)"
         />
       </g>
+      {/*PRINCIPAL LS7*/}
       <g
         style={{
           display: "inline",
@@ -8252,7 +8348,7 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
+            fill: "RED",
             stroke: "#fff",
             strokeWidth: 0.333333,
             strokeLinecap: "round",
@@ -8262,6 +8358,20 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(1.5 0 0 1.5 -40.03 8.867)"
+        />
+        <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333333,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 1.5 -35.53 8.867)"
         />
         <path
           d="m88.158 12.294 2.094-.955-2.094-1.027v1.982"
@@ -8294,6 +8404,7 @@ return (
           transform="matrix(1.5 0 0 1.5 -40.03 8.867)"
         />
       </g>
+      {/*PRINCIPAL LS11*/}
       <g
         style={{
           display: "inline",
@@ -8348,6 +8459,7 @@ return (
           transform="matrix(1.5 0 0 1.5 39.497 8.867)"
         />
       </g>
+      {/*PRINCIPAL LS21*/}
       <g
         style={{
           display: "inline",
@@ -8402,6 +8514,7 @@ return (
           transform="matrix(1.5 0 0 1.5 218.078 8.867)"
         />
       </g>
+      {/*PRINCIPAL LS10*/}
       <g
         style={{
           display: "inline",
@@ -8456,6 +8569,7 @@ return (
           transform="matrix(-1.4999 0 0 1.5 538.072 122.696)"
         />
       </g>
+      {/*PRINCIPAL LS5A*/}
       <g
         style={{
           display: "inline",
@@ -8493,6 +8607,7 @@ return (
           }}
           transform="matrix(1 0 0 -1 66.27 88.523)"
         />
+      {/*PRINCIPAL LS5B*/}
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
@@ -8536,7 +8651,23 @@ return (
           transform="matrix(1 0 0 -1 66.27 88.523)"
         />
         <path
-          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
+          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
+          style={{
+            display: "inline",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 -1.5 111.007 73.009)"
+        />
+        <path
+          d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
             display: "inline",
             fill: "red",
@@ -8552,6 +8683,7 @@ return (
           transform="matrix(1.5 0 0 -1.5 111.007 73.009)"
         />
       </g>
+      {/*PRINCIPAL LS17*/}
       <g
         style={{
           display: "inline",
@@ -8641,6 +8773,7 @@ return (
           transform="matrix(1.4999 0 0 1.5 87.35 57.46)"
         />
       </g>
+      {/*MANIOBRA LS55*/}
       <g
         style={{
           display: "inline",
@@ -8678,15 +8811,15 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {"2"}
+            {sen_man["LS55"].RUTA}
           </tspan>
         </text>
         <path
           d="M99.921 199.465v1.863h.06a3.718 3.718 0 0 0 1.517-.418 3.63 3.63 0 0 0 1.013-.757 3.83 3.83 0 0 0 .77-1.144c.184-.425.28-.817.323-1.324l.007-.084h-3.69z"
           style={{
-            fill: "red",
+            fill: getColorSenMan(sen_man["LS55"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS55"]),
             strokeWidth: 0.774,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8702,9 +8835,9 @@ return (
           d="M99.253 199.465a1.469 1.469 0 1 1-2.938 0 1.469 1.469 0 0 1 2.938 0"
           style={{
             display: "inline",
-            fill: "#f0f",
+            fill: getColorSenManUsoComp(sen_man["LS55"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenManUsoCom(sen_man["LS55"]),
             strokeWidth: 0.562044,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8719,7 +8852,7 @@ return (
           style={{
             display: "inline",
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS55"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8739,6 +8872,7 @@ return (
           strokeOpacity: 1,
         }}
       >
+      {/*PRINCIPAL LS15A*/}
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
@@ -8767,6 +8901,7 @@ return (
           }}
           transform="matrix(1 0 0 -1 193.106 65.316)"
         />
+      {/*PRINCIPAL LS15B*/}
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
@@ -8810,7 +8945,23 @@ return (
           transform="matrix(1 0 0 -1 193.106 65.316)"
         />
         <path
-          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
+          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
+          style={{
+            display: "inline",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 -1.5 237.843 49.801)"
+        />
+        <path
+          d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
             display: "inline",
             fill: "red",
@@ -8835,6 +8986,7 @@ return (
           strokeOpacity: 1,
         }}
       >
+      {/*PRINCIPAL LS19A*/}
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
@@ -8863,6 +9015,7 @@ return (
           }}
           transform="translate(326.251 16.87)"
         />
+      {/*PRINCIPAL LS19B*/}
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
@@ -8906,7 +9059,23 @@ return (
           transform="translate(326.251 16.87)"
         />
         <path
-          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
+          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
+          style={{
+            display: "inline",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 1.5 370.988 32.385)"
+        />
+        <path
+          d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
             display: "inline",
             fill: "red",
@@ -8931,6 +9100,7 @@ return (
           strokeOpacity: 1,
         }}
       >
+      {/*PRINCIPAL LS14A*/}
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
@@ -8959,6 +9129,7 @@ return (
           }}
           transform="matrix(-1 0 0 1 337.728 108.152)"
         />
+      {/*PRINCIPAL LS14B*/}
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
@@ -9002,7 +9173,23 @@ return (
           transform="matrix(-1 0 0 1 337.728 108.152)"
         />
         <path
-          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
+          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
+          style={{
+            display: "inline",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.5 0 0 1.5 292.991 123.666)"
+        />
+        <path
+          d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
             display: "inline",
             fill: "red",
@@ -9027,6 +9214,7 @@ return (
           strokeOpacity: 1,
         }}
       >
+      {/*PRINCIPAL LS23A*/}
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
@@ -9055,6 +9243,7 @@ return (
           }}
           transform="translate(326.251 63.437)"
         />
+      {/*PRINCIPAL LS23B*/}
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
@@ -9098,7 +9287,23 @@ return (
           transform="translate(326.251 63.437)"
         />
         <path
-          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
+          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
+          style={{
+            display: "inline",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 1.5 370.988 78.952)"
+        />
+        <path
+          d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
             display: "inline",
             fill: "red",
@@ -9114,6 +9319,7 @@ return (
           transform="matrix(1.5 0 0 1.5 370.988 78.952)"
         />
       </g>
+      {/*MANIOBRA LS56*/}
       <g
         style={{
           display: "inline",
@@ -9122,9 +9328,9 @@ return (
         <path
           d="M99.921 199.465v1.863h.06a3.718 3.718 0 0 0 1.517-.418 3.63 3.63 0 0 0 1.013-.757 3.83 3.83 0 0 0 .77-1.144c.184-.425.28-.817.323-1.324l.007-.084h-3.69z"
           style={{
-            fill: "red",
+            fill: getColorSenMan(sen_man["LS56"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS56"]),
             strokeWidth: 0.774,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9140,9 +9346,9 @@ return (
           d="M99.253 199.465a1.469 1.469 0 1 1-2.938 0 1.469 1.469 0 0 1 2.938 0"
           style={{
             display: "inline",
-            fill: "#f0f",
+            fill: getColorSenManUsoComp(sen_man["LS56"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenManUsoCom(sen_man["LS56"]),
             strokeWidth: 0.562044,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9157,7 +9363,7 @@ return (
           style={{
             display: "inline",
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS56"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9177,6 +9383,7 @@ return (
           strokeOpacity: 1,
         }}
       >
+      {/*PRINCIPAL LS16*/}
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
@@ -9222,6 +9429,7 @@ return (
           transform="matrix(-1.4999 0 0 1.5 444.02 31.566)"
         />
       </g>
+      {/*SEÑAL TOPERA LADO CIDADELA*/}
       <g
         style={{
           display: "inline",
@@ -9271,6 +9479,7 @@ return (
           strokeOpacity: 1,
         }}
       >
+      {/*PRINCIPAL LS12A*/}
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
@@ -9299,6 +9508,7 @@ return (
           }}
           transform="rotate(180 168.864 67.591)"
         />
+      {/*PRINCIPAL LS12B*/}
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
@@ -9342,7 +9552,23 @@ return (
           transform="rotate(180 168.864 67.591)"
         />
         <path
-          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
+          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
+          style={{
+            display: "inline",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="rotate(180 146.496 59.834) scale(1.5)"
+        />
+        <path
+          d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
             display: "inline",
             fill: "red",
@@ -9358,6 +9584,7 @@ return (
           transform="rotate(180 146.496 59.834) scale(1.5)"
         />
       </g>
+      {/*MANIOBRA LS52*/}
       <g
         style={{
           display: "inline",
@@ -9395,15 +9622,15 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {"3"}
+            {sen_man["LS52"].RUTA}
           </tspan>
         </text>
         <path
           d="M102.99 193.94v1.864h.06a3.718 3.718 0 0 0 1.517-.418 3.63 3.63 0 0 0 1.013-.757 3.83 3.83 0 0 0 .77-1.144c.184-.426.28-.817.323-1.324l.007-.084h-3.69z"
           style={{
-            fill: "red",
+            fill: getColorSenMan(sen_man["LS52"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS52"]),
             strokeWidth: 0.774,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9419,9 +9646,9 @@ return (
           d="M102.322 193.94a1.469 1.469 0 1 1-2.938 0 1.469 1.469 0 0 1 2.938 0"
           style={{
             display: "inline",
-            fill: "#f0f",
+            fill: getColorSenManUsoComp(sen_man["LS52"]),
             fillOpacity: 1,
-            stroke: "#fff",
+            stroke: getColorStrokeSenManUsoCom(sen_man["LS52"]),
             strokeWidth: 0.562044,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9436,7 +9663,7 @@ return (
           style={{
             display: "inline",
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenMan(sen_man["LS52"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -13612,9 +13839,8 @@ return (
         d="M108.744 202.935h8.07v3.969h-8.07z"
         style={{
           display: "inline",
-          fill: "red",
+          fill: sen_man["LS53"].X?"red":"black",
           fillOpacity: 1,
-          stroke: "red",
           strokeWidth: 0.773999,
           strokeLinecap: "square",
           strokeLinejoin: "miter",
@@ -13665,9 +13891,8 @@ return (
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_man["LS59"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -13719,9 +13944,8 @@ return (
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_man["LS51"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -13773,9 +13997,8 @@ return (
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_man["LS50"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -13881,9 +14104,8 @@ return (
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_man["LS57"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14663,19 +14885,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
-          d="M108.744 202.935h8.07v3.969h-8.07z"
+          d="M108.744 202.935h8.07v3.4h-8.07z"
           style={{
             display: "inline",
             fill: "red",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14684,7 +14901,7 @@ return (
             strokeOpacity: 1,
             paintOrder: "fill markers stroke",
           }}
-          transform="translate(-81.613 -155.117)"
+          transform="translate(-84.576 -158.7)"
         />
         <text
           xmlSpace="preserve"
@@ -14696,15 +14913,15 @@ return (
             fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
-          transform="translate(-81.613 -155.117)"
+          transform="translate(-84.576 -158.7)"
         >
           <tspan
-            x="108.37807 110.36231"
-            y={206.196}
+            x={109}
+            y={205.7}
             style={{
               fontVariant: "normal",
               fontWeight: 400,
-              fontSize: "3.56877px",
+              fontSize: "3px",
               fontFamily: "Arial",
               writingMode: "lr-tb",
               fill: "#ff0",
@@ -14721,19 +14938,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
-          d="M108.744 202.935h8.07v3.969h-8.07z"
+          d="M108.744 202.935h8.07v3.4h-8.07z"
           style={{
             display: "inline",
             fill: "red",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14742,7 +14954,7 @@ return (
             strokeOpacity: 1,
             paintOrder: "fill markers stroke",
           }}
-          transform="translate(-80.576 -150.289)"
+          transform="translate(-84.576 -145.5)"
         />
         <text
           xmlSpace="preserve"
@@ -14754,15 +14966,15 @@ return (
             fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
-          transform="translate(-80.576 -150.289)"
+          transform="translate(-84.576 -145.5)"
         >
           <tspan
-            x="108.28049 110.26473"
-            y={206.196}
+            x={109}
+            y={205.8}
             style={{
               fontVariant: "normal",
               fontWeight: 400,
-              fontSize: "3.56877px",
+              fontSize: "3px",
               fontFamily: "Arial",
               writingMode: "lr-tb",
               fill: "#ff0",
@@ -14953,19 +15165,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_man["LS55"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15417,19 +15624,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.735 202.926h7.654v3.987h-7.654z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_man["LS56"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.755555,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15475,19 +15677,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.735 202.926h7.654v3.987h-7.654z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_man["LS52"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.755555,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15533,20 +15730,15 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.735 202.926h7.654v3.987h-7.654z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_man["LS54"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
-            strokeWidth: 0.755555,
+            strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
             strokeMiterlimit: 100,
@@ -15565,7 +15757,7 @@ return (
             display: "inline",
             fill: "#ff0",
             strokeWidth: 0.0357188,
-          }}
+          }}          
           transform="translate(184.687 -50.635)"
         >
           <tspan

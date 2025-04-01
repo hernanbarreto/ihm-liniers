@@ -174,6 +174,31 @@ export default function Home() {
     </Table>
   );
 
+  {/*
+    "R": ROJO, 
+    "RF": FILAMENTO ROJO QUEMADO, 
+    "G": VERDE, 
+    "GF": FILAMENTO VERDE QUEMADO, 
+    "V": VIOLETA, 
+    "VF": FILAMENTO VIOLETA QUEMADO, 
+    "SA": SIN AVANCE,
+    "CDV_O": AL MENOS UN CDV OCUPADO,
+    "IR": INICIO DE RUTA, 
+    "SD": SIN DATOS, 
+    "X": BLOQUEADA*/
+  }
+  const ArraySEN_MAN = {
+    "LS53":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
+    "LS50":{"R": false, "RF": false, "G": false, "GF": false, "V": null, "VF": null, "SA": null, "CDV_O": null, "IR": false, "SD": true, "X": false, "RUTA": '2'},
+    "LS51":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
+    "LS59":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
+    "LS57":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
+    "LS54":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '3'},
+    "LS55":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
+    "LS56":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
+    "LS52":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '3'},
+  };
+
   {/*L: LIBRE*/}
   {/*O: OCUPADO*/}
   {/*SD: SIN DATOS*/}
@@ -181,18 +206,6 @@ export default function Home() {
   {/*RM: RUTA MANIOBRA*/}
   {/*DES: DESLIZAMIENTO*/}
   {/*REQ: REQUERIDO*/}
-  const estadoCDV = {
-    "L":"#FFF212", 
-    "O":"#FF0000", 
-    "SD": "#808080", 
-    "RA": "#00FF00", 
-    "RM": "#A2CADF", 
-    "DES": "#800080",
-    "REQ": "#800080", 
-  };
-
-  {/*{L: true, O: false, SD: false, RA: false, RM: false, DES: false, REQ: false, X: false}*/}
-
   const ArrayCDV = {
     "3T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
     "5AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
@@ -311,7 +324,12 @@ export default function Home() {
 
       <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", overflow: "hidden", paddingTop: 2 }}>
         {userRole === "operador" ? (
-          <Mimico className="w-full h-full object-contain" cdv_prin={ArrayCDV} mdc={ArrayMDC}/>
+          <Mimico 
+            className="w-full h-full object-contain" 
+            cdv_prin={ArrayCDV} 
+            mdc={ArrayMDC} 
+            sen_man={ArraySEN_MAN}
+          />
         ) : userRole === "admin" ? (
           <Box sx={{ width: "100%", overflow: "auto", height: "100%" }}>
             {userTable}
