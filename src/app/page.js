@@ -17,12 +17,50 @@ import useDatabaseListener from './components/useDatabaseListener';
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showMimico, setShowMimico] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [userId, setUserId] = useState(null);
+
+  {/*L: LIBRE*/}
+  {/*O: OCUPADO*/}
+  {/*SD: SIN DATOS*/}
+  {/*RA: RUTA ABSOLUTA*/}
+  {/*RM: RUTA MANIOBRA*/}
+  {/*DES: DESLIZAMIENTO*/}
+  {/*REQ: REQUERIDO*/}
+  const [ArrayCDV, setArrayCDV] = useState({});
+
+  const [ArrayMDC, setArrayMDC] = useState({});
+
   const router = useRouter();
   
   const { changes } = useDatabase();
   useDatabaseListener(); // Escuchar los cambios en la base de datos
+
+  {/*
+    "R": ROJO, 
+    "RF": FILAMENTO ROJO QUEMADO, 
+    "G": VERDE, 
+    "GF": FILAMENTO VERDE QUEMADO, 
+    "V": VIOLETA, 
+    "VF": FILAMENTO VIOLETA QUEMADO, 
+    "SA": SIN AVANCE,
+    "CDV_O": AL MENOS UN CDV OCUPADO,
+    "IR": INICIO DE RUTA, 
+    "SD": SIN DATOS, 
+    "X": BLOQUEADA*/
+  }
+  const ArraySEN_MAN = {
+    "LS53":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
+    "LS50":{"R": false, "RF": false, "G": false, "GF": false, "V": null, "VF": null, "SA": null, "CDV_O": null, "IR": false, "SD": true, "X": false, "RUTA": '2'},
+    "LS51":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
+    "LS59":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
+    "LS57":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
+    "LS54":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '3'},
+    "LS55":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
+    "LS56":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
+    "LS52":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '3'},
+  };
 
   // Reaccionar a los cambios detectados
   useEffect(() => {
@@ -39,6 +77,39 @@ export default function Home() {
           }
         } else if (change.type === 'DELETE' && change.table === 'users' && change.affectedRows[0].before.id === userId) {
           handleLogout();
+        }
+      }else{
+        if (change.table === 'cdv') {
+          const updatedCDVs = {};
+            change.affectedRows.forEach(row => {
+              const newV = row.after;
+              updatedCDVs[newV.CDV] = {
+                L: newV.L,
+                SD: newV.SD,
+                RA: newV.RA,
+                RM: newV.RM,
+                DES: newV.DES,
+                REQ: newV.REQ,
+                X: newV.X
+              };
+            });
+          setArrayCDV(prev => ({ ...prev, ...updatedCDVs }));
+        }else{
+          if (change.table === 'mdc') {
+            const updatedMDCs = {};
+              change.affectedRows.forEach(row => {
+                const newV = row.after;
+                updatedMDCs[newV.MDC] = {
+                  N: newV.N,
+                  R: newV.R,
+                  F: newV.F,
+                  M: newV.M,
+                  ENC: newV.ENC,
+                  SD: newV.SD,
+                };
+              });
+            setArrayMDC(prev => ({ ...prev, ...updatedMDCs }));  
+          }
         }
       }
     }
@@ -65,7 +136,6 @@ export default function Home() {
           const data = await response.json();
 
           if (data.exists) {
-            console.log(data);
             setUserRole(data.role);
             setUserId(data.id);
           } else {
@@ -80,6 +150,82 @@ export default function Home() {
       getUserRole();
     }
   }, []);
+
+  useEffect(() => {
+    if (userRole === 'operador'){  
+        const getData = async () => {
+          try {
+            const response = await fetch("/api/get-states-cdv", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(),
+            });
+  
+            const data = await response.json();
+
+            if (data.exists) {
+              setArrayCDV(prev => {
+                const newState = { ...prev, ...data.data };
+                return newState;
+              });
+            } else {
+              handleLogout();
+            }
+          } catch (error) {
+            console.error("Error datos:", error);
+            handleLogout();
+          }
+        };
+  
+        getData();
+    }else{
+      setShowMimico(false);
+    }
+  }, [userRole]);
+
+
+  useEffect(() => {
+    if (userRole === 'operador'){  
+        const getData = async () => {
+          try {
+            const response = await fetch("/api/get-states-mdc", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(),
+            });
+  
+            const data = await response.json();
+
+            if (data.exists) {
+              setArrayMDC(prev => {
+                const newState = { ...prev, ...data.data };
+                return newState;
+              });
+            } else {
+              handleLogout();
+            }
+          } catch (error) {
+            console.error("Error datos:", error);
+            handleLogout();
+          }
+        };
+  
+        getData();
+    }else{
+      setShowMimico(false);
+    }
+  }, [userRole]);
+
+  useEffect(() => {
+    if ((Object.keys(ArrayCDV).length)&&(Object.keys(ArrayMDC).length)){
+      setShowMimico(true);
+    }
+  }, [ArrayCDV, ArrayMDC]);
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -174,128 +320,6 @@ export default function Home() {
     </Table>
   );
 
-  {/*
-    "R": ROJO, 
-    "RF": FILAMENTO ROJO QUEMADO, 
-    "G": VERDE, 
-    "GF": FILAMENTO VERDE QUEMADO, 
-    "V": VIOLETA, 
-    "VF": FILAMENTO VIOLETA QUEMADO, 
-    "SA": SIN AVANCE,
-    "CDV_O": AL MENOS UN CDV OCUPADO,
-    "IR": INICIO DE RUTA, 
-    "SD": SIN DATOS, 
-    "X": BLOQUEADA*/
-  }
-  const ArraySEN_MAN = {
-    "LS53":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
-    "LS50":{"R": false, "RF": false, "G": false, "GF": false, "V": null, "VF": null, "SA": null, "CDV_O": null, "IR": false, "SD": true, "X": false, "RUTA": '2'},
-    "LS51":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
-    "LS59":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
-    "LS57":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
-    "LS54":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '3'},
-    "LS55":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
-    "LS56":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
-    "LS52":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '3'},
-  };
-
-  {/*L: LIBRE*/}
-  {/*O: OCUPADO*/}
-  {/*SD: SIN DATOS*/}
-  {/*RA: RUTA ABSOLUTA*/}
-  {/*RM: RUTA MANIOBRA*/}
-  {/*DES: DESLIZAMIENTO*/}
-  {/*REQ: REQUERIDO*/}
-  const ArrayCDV = {
-    "3T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "5AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "9T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "7T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "11T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "24BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "24T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "20T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "14BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "18T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "22AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "30AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "VMT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "5BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "V6T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "13BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "P1T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "19CT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "21AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "15AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "21T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "19T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "15T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "19BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "14AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "10AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "10T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "6CT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "P2T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "12T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "19ET": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "21BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "14DT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "22T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "30T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "28AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "3AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "5T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "26T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "17T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "12BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "12AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "13T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "13AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "14T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "14CT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "19AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "6BT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "6AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "6T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "8T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "19DT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "24AT": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-    "28T": {"L": true, "O": true, "SD": false, "RA": false, "RM": false, "DES": false, "REQ": false, "X": false},
-  };
-
-  const ArrayMDC = {
-    "43": {N: true, R: false, F: false, M: false, ENC: false},
-    "39A": {N: true, R: false, F: false, M: false, ENC: false},
-    "39B": {N: true, R: false, F: false, M: false, ENC: false},
-    "49A": {N: true, R: false, F: false, M: false, ENC: false},
-    "49B": {N: true, R: false, F: false, M: false, ENC: false},
-    "17A": {N: true, R: false, F: false, M: false, ENC: false},
-    "17B": {N: true, R: false, F: false, M: false, ENC: false},
-    "40A": {N: true, R: false, F: false, M: false, ENC: false},
-    "40B": {N: true, R: false, F: false, M: false, ENC: false},
-    "54A": {N: true, R: false, F: false, M: false, ENC: false},
-    "54B": {N: true, R: false, F: false, M: false, ENC: false},
-    "38A": {N: true, R: false, F: false, M: false, ENC: false},
-    "38B": {N: true, R: false, F: false, M: false, ENC: false},
-    "21A": {N: true, R: false, F: false, M: false, ENC: false},
-    "21B": {N: true, R: false, F: false, M: false, ENC: false},
-    "23A": {N: true, R: false, F: false, M: false, ENC: false},
-    "23B": {N: true, R: false, F: false, M: false, ENC: false},
-    "31A": {N: true, R: false, F: false, M: false, ENC: false},
-    "31B": {N: true, R: false, F: false, M: false, ENC: false},
-    "32": {N: true, R: false, F: false, M: false, ENC: false},
-    "47": {N: true, R: false, F: false, M: false, ENC: false},
-    "26": {N: true, R: false, F: false, M: false, ENC: false},
-    "14A": {N: true, R: false, F: false, M: false, ENC: false},
-    "14B": {N: true, R: false, F: false, M: false, ENC: false},
-    "15A": {N: true, R: false, F: false, M: false, ENC: false},
-    "15B": {N: true, R: false, F: false, M: false, ENC: false},
-    "16A": {N: true, R: false, F: false, M: false, ENC: false},
-    "16B": {N: true, R: false, F: false, M: false, ENC: false},
-    "41A": {N: true, R: false, F: false, M: false, ENC: false},
-    "41B": {N: true, R: false, F: false, M: false, ENC: false},
-};
-
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100vh", backgroundColor: "black" }}>
       <AppBar position="sticky" sx={{ backgroundColor: "#222a4f", padding: "0 16px", height: 120, userSelect: 'none'}}>
@@ -323,7 +347,7 @@ export default function Home() {
       </AppBar>
 
       <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", overflow: "hidden", paddingTop: 2 }}>
-        {userRole === "operador" ? (
+        {(showMimico) ? (
           <Mimico 
             className="w-full h-full object-contain" 
             cdv_prin={ArrayCDV} 

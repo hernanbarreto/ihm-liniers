@@ -12,8 +12,8 @@ const estadoCDV = {
 };
 
 const getCDVColor = (cdv) => {
-  if ((cdv.SD)||(cdv.L === cdv.O)) return estadoCDV["SD"];  // Sin Datos (Máxima prioridad)
-  if (cdv.O) return estadoCDV["O"];    // Ocupado
+  if (cdv.SD) return estadoCDV["SD"];  // Sin Datos (Máxima prioridad)
+  if (!cdv.L) return estadoCDV["O"];    // Ocupado
   if (cdv.RA) return estadoCDV["RA"];   // Ruta Absoluta
   if (cdv.RM) return estadoCDV["RM"];   // Ruta Maniobra
   if (cdv.DES) return estadoCDV["DES"];  // Deslizamiento
@@ -22,15 +22,16 @@ const getCDVColor = (cdv) => {
 };
 
 const getCDVColorCAM = (cdv, mdc, pos) => {
+  if (mdc.N === mdc.R) return getCDVColor(cdv);
   if ((mdc.N&&pos=="N")||(mdc.R&&pos=="R")) return getCDVColor(cdv);
   if ((mdc.N&&pos=="R")||(mdc.R&&pos=="N")){ 
-    if ((cdv.SD)||(cdv.L === cdv.O)) return estadoCDV["SD"];
+    if (cdv.SD) return estadoCDV["SD"];
     else
     if (cdv.RA||cdv.RM) return estadoCDV["L"];
     else
-    if (cdv.L) return estadoCDV["L"];
+    if (!cdv.L) return estadoCDV["O"];
     else
-    if (cdv.O) return estadoCDV["O"];
+    return estadoCDV["L"];
   }
 };
 
@@ -4022,7 +4023,7 @@ return (
         display: "inline",
       }}
     >
-      {((!mdc["43"].N && !mdc["43"].R)||(mdc["43"].N && mdc["43"].R)) && (
+      {((!mdc["43"].N && !mdc["43"].R)||(mdc["43"].N && mdc["43"].R)||(mdc["43"].SD)) && (
       <path
         d="M64.836 58.496h9.651v6.191h-9.651z"
         style={{
@@ -4036,7 +4037,7 @@ return (
         }}
       />
       )}
-      {((!mdc["39B"].N && !mdc["39B"].R)||(mdc["39B"].N && mdc["39B"].R)) && (
+      {((!mdc["39B"].N && !mdc["39B"].R)||(mdc["39B"].N && mdc["39B"].R)||(mdc["39B"].SD)) && (
       <path
         d="M95.031 59.687h10.722v6.224H95.031z"
         style={{
@@ -4050,7 +4051,7 @@ return (
         }}
       />
       )}
-      {((!mdc["39A"].N && !mdc["39A"].R)||(mdc["39A"].N && mdc["39A"].R)) && (
+      {((!mdc["39A"].N && !mdc["39A"].R)||(mdc["39A"].N && mdc["39A"].R)||(mdc["39A"].SD)) && (
       <path
         d="M106.044 81.829h10.126v6.123h-10.126z"
         style={{
@@ -4064,7 +4065,7 @@ return (
         }}
       />
       )}
-      {((!mdc["40A"].N && !mdc["40A"].R)||(mdc["40A"].N && mdc["40A"].R)) && (
+      {((!mdc["40A"].N && !mdc["40A"].R)||(mdc["40A"].N && mdc["40A"].R)||(mdc["40A"].SD)) && (
       <path
         d="M174.418 82.952h10.147v5.298h-10.147z"
         style={{
@@ -4078,7 +4079,7 @@ return (
         }}
       />
       )}
-      {((!mdc["40B"].N && !mdc["40B"].R)||(mdc["40B"].N && mdc["40B"].R)) && (
+      {((!mdc["40B"].N && !mdc["40B"].R)||(mdc["40B"].N && mdc["40B"].R)||(mdc["40B"].SD)) && (
       <path
         d="M161.821 105.939h10.114v5.301h-10.114z"
         style={{
@@ -4092,7 +4093,7 @@ return (
         }}
       />
       )}
-      {((!mdc["32"].N && !mdc["32"].R)||(mdc["32"].N && mdc["32"].R)) && (
+      {((!mdc["32"].N && !mdc["32"].R)||(mdc["32"].N && mdc["32"].R)||(mdc["32"].SD)) && (
       <g
         style={{
           display: "inline",
@@ -4126,7 +4127,7 @@ return (
         />
       </g>
       )}
-      {((!mdc["26"].N && !mdc["26"].R)||(mdc["26"].N && mdc["26"].R)) && (
+      {((!mdc["26"].N && !mdc["26"].R)||(mdc["26"].N && mdc["26"].R)||(mdc["26"].SD)) && (
       <path
         d="M108.204 162.73h9.125v6.181h-9.125z"
         style={{
@@ -4140,7 +4141,7 @@ return (
         }}
       />
       )}
-      {((!mdc["31A"].N && !mdc["31A"].R)||(mdc["31A"].N && mdc["31A"].R)) && (
+      {((!mdc["31A"].N && !mdc["31A"].R)||(mdc["31A"].N && mdc["31A"].R)||(mdc["31A"].SD)) && (
       <path
         d="M142.185 161.824h10.644v5.905h-10.644z"
         style={{
@@ -4154,7 +4155,7 @@ return (
         }}
       />
       )}
-      {((!mdc["31B"].N && !mdc["31B"].R)||(mdc["31B"].N && mdc["31B"].R)) && (
+      {((!mdc["31B"].N && !mdc["31B"].R)||(mdc["31B"].N && mdc["31B"].R)||(mdc["31B"].SD)) && (
       <path
         d="M115.421 131.7h10.642v5.906h-10.642z"
         style={{
@@ -4168,7 +4169,7 @@ return (
         }}
       />
       )}
-      {((!mdc["47"].N && !mdc["47"].R)||(mdc["47"].N && mdc["47"].R)) && (
+      {((!mdc["47"].N && !mdc["47"].R)||(mdc["47"].N && mdc["47"].R)||(mdc["47"].SD)) && (
       <path
         d="M251.98 162.73h9.114v6.175h-9.114z"
         style={{
@@ -4182,7 +4183,7 @@ return (
         }}
       />
       )}
-      {((!mdc["49A"].N && !mdc["49A"].R)||(mdc["49A"].N && mdc["49A"].R)) && (
+      {((!mdc["49A"].N && !mdc["49A"].R)||(mdc["49A"].N && mdc["49A"].R)||(mdc["49A"].SD)) && (
       <path
         d="M260.604 59.344h8.578v5.343h-8.578z"
         style={{
@@ -4196,7 +4197,7 @@ return (
         }}
       />
       )}
-      {((!mdc["17A"].N && !mdc["17A"].R)||(mdc["17A"].N && mdc["17A"].R)) && (
+      {((!mdc["17A"].N && !mdc["17A"].R)||(mdc["17A"].N && mdc["17A"].R)||(mdc["17A"].SD)) && (
       <path
         d="M245.499 59.687h10.434v5.344h-10.434z"
         style={{
@@ -4210,7 +4211,7 @@ return (
         }}
       />
       )}
-      {((!mdc["17B"].N && !mdc["17B"].R)||(mdc["17B"].N && mdc["17B"].R)) && (
+      {((!mdc["17B"].N && !mdc["17B"].R)||(mdc["17B"].N && mdc["17B"].R)||(mdc["17B"].SD)) && (
       <path
         d="M233.27 82.609h10.098v5.302H233.27z"
         style={{
@@ -4224,7 +4225,7 @@ return (
         }}
       />
       )}
-      {((!mdc["49B"].N && !mdc["49B"].R)||(mdc["49B"].N && mdc["49B"].R)) && (
+      {((!mdc["49B"].N && !mdc["49B"].R)||(mdc["49B"].N && mdc["49B"].R)||(mdc["49B"].SD)) && (
       <path
         d="M246.509 36.392h8.573v5.4h-8.573z"
         style={{
@@ -4238,7 +4239,7 @@ return (
         }}
       />
       )}
-      {((!mdc["54B"].N && !mdc["54B"].R)||(mdc["54B"].N && mdc["54B"].R)) && (
+      {((!mdc["54B"].N && !mdc["54B"].R)||(mdc["54B"].N && mdc["54B"].R)||(mdc["54B"].SD)) && (
       <path
         d="M249.258 84.084h7.126v4.21h-7.126z"
         style={{
@@ -4252,7 +4253,7 @@ return (
         }}
       />
       )}
-      {((!mdc["54A"].N && !mdc["54A"].R)||(mdc["54A"].N && mdc["54A"].R)) && (
+      {((!mdc["54A"].N && !mdc["54A"].R)||(mdc["54A"].N && mdc["54A"].R)||(mdc["54A"].SD)) && (
       <path
         d="M252.812 105.895h7.155v4.196h-7.155z"
         style={{
@@ -4266,7 +4267,7 @@ return (
         }}
       />
       )}
-      {((!mdc["38B"].N && !mdc["38B"].R)||(mdc["38B"].N && mdc["38B"].R)) && (
+      {((!mdc["38B"].N && !mdc["38B"].R)||(mdc["38B"].N && mdc["38B"].R)||(mdc["38B"].SD)) && (
       <path
         d="M270.991 107.421h9.154v4.163h-9.154z"
         style={{
@@ -4280,7 +4281,7 @@ return (
         }}
       />
       )}
-      {((!mdc["38A"].N && !mdc["38A"].R)||(mdc["38A"].N && mdc["38A"].R)) && (
+      {((!mdc["38A"].N && !mdc["38A"].R)||(mdc["38A"].N && mdc["38A"].R)||(mdc["38A"].SD)) && (
       <path
         d="M276.442 131.355h9.158v4.478h-9.158z"
         style={{
@@ -4294,7 +4295,7 @@ return (
         }}
       />
       )}
-      {((!mdc["23A"].N && !mdc["23A"].R)||(mdc["23A"].N && mdc["23A"].R)) && (
+      {((!mdc["23A"].N && !mdc["23A"].R)||(mdc["23A"].N && mdc["23A"].R)||(mdc["23A"].SD)) && (
       <path
         d="M287.193 132.755h3.907v4.293h-3.907z"
         style={{
@@ -4308,7 +4309,7 @@ return (
         }}
       />
       )}
-      {((!mdc["23B"].N && !mdc["23B"].R)||(mdc["23B"].N && mdc["23B"].R)) && (
+      {((!mdc["23B"].N && !mdc["23B"].R)||(mdc["23B"].N && mdc["23B"].R)||(mdc["23B"].SD)) && (
       <path
         d="M271.214 162.384h6.783v4.595h-6.783z"
         style={{
@@ -4322,7 +4323,7 @@ return (
         }}
       />
       )}
-      {((!mdc["21A"].N && !mdc["21A"].R)||(mdc["21A"].N && mdc["21A"].R)) && (
+      {((!mdc["21A"].N && !mdc["21A"].R)||(mdc["21A"].N && mdc["21A"].R)||(mdc["21A"].SD)) && (
       <path
         d="M296.626 106.658h9.154v4.924h-9.154z"
         style={{
@@ -4336,7 +4337,7 @@ return (
         }}
       />
       )}
-      {((!mdc["21B"].N && !mdc["21B"].R)||(mdc["21B"].N && mdc["21B"].R)) && (
+      {((!mdc["21B"].N && !mdc["21B"].R)||(mdc["21B"].N && mdc["21B"].R)||(mdc["21B"].SD)) && (
       <path
         d="M291.226 131.353h9.162v4.32h-9.162z"
         style={{
@@ -4350,7 +4351,7 @@ return (
         }}
       />
       )}
-      {((!mdc["16A"].N && !mdc["16A"].R)||(mdc["16A"].N && mdc["16A"].R)) && (
+      {((!mdc["16A"].N && !mdc["16A"].R)||(mdc["16A"].N && mdc["16A"].R)||(mdc["16A"].SD)) && (
       <path
         d="M416.382 106.207h11.984v5.467h-11.984z"
         style={{
@@ -4364,7 +4365,7 @@ return (
         }}
       />
       )}
-      {((!mdc["16B"].N && !mdc["16B"].R)||(mdc["16B"].N && mdc["16B"].R)) && (
+      {((!mdc["16B"].N && !mdc["16B"].R)||(mdc["16B"].N && mdc["16B"].R)||(mdc["16B"].SD)) && (
       <path
         d="M430.124 131.26h11.203v5.674h-11.203z"
         style={{
@@ -4378,7 +4379,7 @@ return (
         }}
       />
       )}
-      {((!mdc["41B"].N && !mdc["41B"].R)||(mdc["41B"].N && mdc["41B"].R)) && (
+      {((!mdc["41B"].N && !mdc["41B"].R)||(mdc["41B"].N && mdc["41B"].R)||(mdc["41B"].SD)) && (
       <path
         d="M451.435 37.55h10.315v4.282h-10.315z"
         style={{
@@ -4392,7 +4393,7 @@ return (
         }}
       />
       )}
-      {((!mdc["41A"].N && !mdc["41A"].R)||(mdc["41A"].N && mdc["41A"].R)) && (
+      {((!mdc["41A"].N && !mdc["41A"].R)||(mdc["41A"].N && mdc["41A"].R)||(mdc["41A"].SD)) && (
       <path
         d="M439.077 59.248h10.843v4.419h-10.843z"
         style={{
@@ -4406,7 +4407,7 @@ return (
         }}
       />
       )}
-      {((!mdc["14A"].N && !mdc["14A"].R)||(mdc["14A"].N && mdc["14A"].R)) && (
+      {((!mdc["14A"].N && !mdc["14A"].R)||(mdc["14A"].N && mdc["14A"].R)||(mdc["14A"].SD)) && (
       <path
         d="M368.024 59.977h8.999v5.054h-8.999z"
         style={{
@@ -4420,7 +4421,7 @@ return (
         }}
       />
       )}
-      {((!mdc["15B"].N && !mdc["15B"].R)||(mdc["15B"].N && mdc["15B"].R)) && (
+      {((!mdc["15B"].N && !mdc["15B"].R)||(mdc["15B"].N && mdc["15B"].R)||(mdc["15B"].SD)) && (
       <path
         d="M417.116 59.631h8.999v5.401h-8.999z"
         style={{
@@ -4434,7 +4435,7 @@ return (
         }}
       />
       )}
-      {((!mdc["14B"].N && !mdc["14B"].R)||(mdc["14B"].N && mdc["14B"].R)) && (
+      {((!mdc["14B"].N && !mdc["14B"].R)||(mdc["14B"].N && mdc["14B"].R)||(mdc["14B"].SD)) && (
       <path
         d="M385.276 106.164h8.999v5.103h-8.999z"
         style={{
@@ -4448,7 +4449,7 @@ return (
         }}
       />
       )}
-      {((!mdc["15A"].N && !mdc["15A"].R)||(mdc["15A"].N && mdc["15A"].R)) && (
+      {((!mdc["15A"].N && !mdc["15A"].R)||(mdc["15A"].N && mdc["15A"].R)||(mdc["15A"].SD)) && (
       <path
         d="M399.864 106.188h6.282v4.408h-6.282z"
         style={{
@@ -7318,6 +7319,8 @@ return (
           transform="translate(23.757 -8.975)"
         />
       </g>
+
+      {/*SEÑAL LS22*/}
       <g
         style={{
           stroke: "#fff",
@@ -7339,6 +7342,20 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(-1.4999 0 0 1.5 309.688 97.17)"
+        />
+        <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333344,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.4999 0 0 1.5 305.188 97.17)"
         />
         <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
@@ -7371,6 +7388,7 @@ return (
           transform="matrix(-1.4999 0 0 1.5 309.688 97.17)"
         />
       </g>
+      {/*SEÑAL LS13*/}
       <g
         style={{
           stroke: "#fff",
@@ -7392,6 +7410,20 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(1.5 0 0 1.5 86.803 32.162)"
+        />
+        <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333333,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 1.5 91.303 32.162)"
         />
         <path
           d="m219.305 49.703 3.14-1.433-3.14-1.539v2.972"
@@ -7424,6 +7456,7 @@ return (
           transform="matrix(1.5 0 0 1.5 86.803 32.162)"
         />
       </g>
+      {/*SEÑAL LS20*/}
       <g
         style={{
           stroke: "#fff",
@@ -7445,6 +7478,20 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(-1.4999 0 0 1.5 369.481 122.696)"
+        />
+        <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333344,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.4999 0 0 1.5 364.981 122.696)"
         />
         <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
@@ -7477,6 +7524,7 @@ return (
           transform="matrix(-1.4999 0 0 1.5 369.481 122.696)"
         />
       </g>
+      {/*SEÑAL LS18*/}
       <g
         style={{
           stroke: "#fff",
@@ -7498,6 +7546,20 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(-1.4999 0 0 1.5 370.424 97.17)"
+        />
+        <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333344,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.4999 0 0 1.5 365.924 97.17)"
         />
         <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
@@ -7530,6 +7592,7 @@ return (
           transform="matrix(-1.4999 0 0 1.5 370.424 97.17)"
         />
       </g>
+      {/*SEÑAL LS9*/}
       <g
         style={{
           stroke: "#fff",
@@ -7551,6 +7614,20 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(1.5 0 0 1.5 39.498 32.162)"
+        />
+        <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333333,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 1.5 43.998 32.162)"
         />
         <path
           d="m88.158 12.294 2.094-.955-2.094-1.027v1.982"
@@ -7606,6 +7683,20 @@ return (
           transform="matrix(-1.5 0 0 1.5 215.023 122.696)"
         />
         <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333333,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.5 0 0 1.5 210.523 122.696)"
+        />
+        <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
           style={{
             display: "inline",
@@ -7659,6 +7750,20 @@ return (
           transform="matrix(-1.5 0 0 1.5 295.29 122.696)"
         />
         <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333333,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.5 0 0 1.5 290.79 122.696)"
+        />
+        <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
           style={{
             display: "inline",
@@ -7710,6 +7815,20 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(-1.4999 0 0 1.5 214.747 78.715)"
+        />
+        <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333344,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.4999 0 0 1.5 210.247 78.715)"
         />
         <path
           d="m82.56 96.945-3.14-1.433 3.14-1.539v2.972"
@@ -7794,6 +7913,7 @@ return (
           transform="matrix(-1.4999 0 0 1.5 322.757 55.427)"
         />
       </g>
+      {/*SEÑAL LS28*/}
       <g
         style={{
           stroke: "#fff",
@@ -8429,6 +8549,20 @@ return (
           transform="matrix(1.5 0 0 1.5 39.497 8.867)"
         />
         <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333333,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 1.5 43.997 8.867)"
+        />
+        <path
           d="m88.158 12.294 2.094-.955-2.094-1.027v1.982"
           style={{
             display: "inline",
@@ -8482,6 +8616,20 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(1.5 0 0 1.5 218.078 8.867)"
+        />
+        <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333333,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 1.5 222.578 8.867)"
         />
         <path
           d="m88.158 12.294 2.094-.955-2.094-1.027v1.982"
@@ -8539,6 +8687,20 @@ return (
           transform="matrix(-1.4999 0 0 1.5 538.072 122.696)"
         />
         <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.333344,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.4999 0 0 1.5 533.572 122.696)"
+        />
+        <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
           style={{
             display: "inline",
@@ -8592,6 +8754,20 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(1 0 0 -1 66.27 88.523)"
+        />
+        <path
+          d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
+          style={{
+            fill: "YELLOW",
+            stroke: "#fff",
+            strokeWidth: 0.5,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1 0 0 -1 70.77 88.523)"
         />
         <path
           d="M26.125 36.717v3.665-1.865h2.158"
@@ -14991,19 +15167,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
-          d="M108.744 202.935h8.07v3.969h-8.07z"
+          d="M108.744 203.6h8.07v3.969h-8.07z"
           style={{
             display: "inline",
             fill: "red",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15027,12 +15198,12 @@ return (
           transform="translate(-10.134 -150.289)"
         >
           <tspan
-            x="108.37807 110.36231"
-            y={206.196}
+            x={108.8}
+            y={207}
             style={{
               fontVariant: "normal",
               fontWeight: 400,
-              fontSize: "3.56877px",
+              fontSize: "3.2px",
               fontFamily: "Arial",
               writingMode: "lr-tb",
               fill: "#ff0",
@@ -15049,19 +15220,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
-          d="M108.744 202.935h8.07v3.969h-8.07z"
+          d="M104.5 199.3h8.07v3.4h-8.07z"
           style={{
             display: "inline",
             fill: "red",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15074,7 +15240,7 @@ return (
         />
         <text
           xmlSpace="preserve"
-          x={108.28}
+          x={104.28}
           y={206.196}
           style={{
             fontSize: ".428625px",
@@ -15085,12 +15251,12 @@ return (
           transform="translate(-8.939 -155.117)"
         >
           <tspan
-            x="108.28049 110.26473"
-            y={206.196}
+            x={104.8}
+            y={202.1}
             style={{
               fontVariant: "normal",
               fontWeight: 400,
-              fontSize: "3.56877px",
+              fontSize: "3px",
               fontFamily: "Arial",
               writingMode: "lr-tb",
               fill: "#ff0",

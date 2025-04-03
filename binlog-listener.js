@@ -65,15 +65,15 @@ async function startBinlogListener() {
             });
 
             // Si estamos en el master y la replicación está habilitada
-            if (MODE === 'master' && REPLICATION_ENABLED) {
-                try {
-                    await replicateChangeToSlave(event);
-                } catch (err) {
-                    console.error('Error al replicar cambios en el slave:', err);
-                    // Si no podemos replicar, almacenamos el cambio localmente
-                    storePendingChange(event);
-                }
-            }
+            //if (MODE === 'master' && REPLICATION_ENABLED) {
+            //    try {
+            //        await replicateChangeToSlave(event);
+            //    } catch (err) {
+            //        console.error('Error al replicar cambios en el slave:', err);
+            //        // Si no podemos replicar, almacenamos el cambio localmente
+            //        storePendingChange(event);
+            //    }
+            //}
         }
     });
 
