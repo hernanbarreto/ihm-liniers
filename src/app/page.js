@@ -89,7 +89,8 @@ export default function Home() {
                 RA: newV.RA,
                 RM: newV.RM,
                 DES: newV.DES,
-                REQ: newV.REQ,
+                REQN: newV.REQN,
+                REQR: newV.REQR,
                 X: newV.X
               };
             });

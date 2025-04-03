@@ -12,17 +12,28 @@ const estadoCDV = {
 };
 
 const getCDVColor = (cdv) => {
+  console.log(cdv);
   if (cdv.SD) return estadoCDV["SD"];  // Sin Datos (Máxima prioridad)
   if (!cdv.L) return estadoCDV["O"];    // Ocupado
   if (cdv.RA) return estadoCDV["RA"];   // Ruta Absoluta
   if (cdv.RM) return estadoCDV["RM"];   // Ruta Maniobra
   if (cdv.DES) return estadoCDV["DES"];  // Deslizamiento
-  if (cdv.REQ) return estadoCDV["REQ"];  // Requerido
+  if (cdv.REQN || cdv.REQR) return estadoCDV["REQ"];  // Requerido
   return estadoCDV["L"];;               // Libre (Menor prioridad)
 };
 
 const getCDVColorCAM = (cdv, mdc, pos) => {
   if (mdc.N === mdc.R) return getCDVColor(cdv);
+  if ((mdc.N&&pos=="N"&&cdv.REQR)||(mdc.R&&pos=="R"&&cdv.REQN)){ 
+    if (cdv.SD) return estadoCDV["SD"];
+    else
+    if (cdv.RA||cdv.RM) return estadoCDV["L"];
+    else
+    if (!cdv.L) return estadoCDV["O"];
+    else
+    return estadoCDV["L"];
+  }
+  if ((mdc.N&&pos=="R"&&cdv.REQR)||(mdc.R&&pos=="N"&&cdv.REQN)) return getCDVColor(cdv);
   if ((mdc.N&&pos=="N")||(mdc.R&&pos=="R")) return getCDVColor(cdv);
   if ((mdc.N&&pos=="R")||(mdc.R&&pos=="N")){ 
     if (cdv.SD) return estadoCDV["SD"];

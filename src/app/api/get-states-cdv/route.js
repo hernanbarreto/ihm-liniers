@@ -12,7 +12,8 @@ export async function POST() {
           RA: Boolean(rest.RA),
           RM: Boolean(rest.RM),
           DES: Boolean(rest.DES),
-          REQ: Boolean(rest.REQ),
+          REQN: Boolean(rest.REQN),
+          REQR: Boolean(rest.REQR),
           X: Boolean(rest.X)
         };
         return acc;
