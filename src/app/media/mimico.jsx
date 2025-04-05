@@ -1,18 +1,36 @@
 import * as React from "react"
-const Mimico = ({cdv_prin = {}, mdc = {}, sen_man = {},...props}) => {
+import { useState, useEffect } from 'react';
+
+const Mimico = ({username, cdv_prin = {}, mdc = {}, sen_man = {},...props}) => {
+const [currentTime, setCurrentTime] = useState(new Date());
+const [activeSquare, setActiveSquare] = useState(0);
+
+useEffect(() => {
+  const timer = setInterval(() => {
+    setCurrentTime(new Date());
+  }, 1000);
+  return () => clearInterval(timer);
+}, []);  
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setActiveSquare((prev) => (prev + 1) % 3);
+  }, 500);
+  
+  return () => clearInterval(interval);
+}, []);
 
 const estadoCDV = {
-  "L":"#FFF212",
+  "L":"#ffff00",
   "O":"#FF0000",
   "SD": "#808080",
   "RA": "#00FF00",
-  "RM": "#A2CADF",
-  "DES": "#800080",
-  "REQ": "#800080",
+  "RM": "#4a9cfa",
+  "DES": "#6f30a0",
+  "REQ": "#ffc4c4",
 };
 
 const getCDVColor = (cdv) => {
-  console.log(cdv);
   if (cdv.SD) return estadoCDV["SD"];  // Sin Datos (Máxima prioridad)
   if (!cdv.L) return estadoCDV["O"];    // Ocupado
   if (cdv.RA) return estadoCDV["RA"];   // Ruta Absoluta
@@ -76,14 +94,14 @@ const getColorStrokeSenMan = (sen) => {
 
 const getColorSenManUsoComp = (sen) => {
   if (sen.SD) return estadoSEN["SD"];
-  if (sen.SA) return estadoSEN["SA_SEM"];
+  if (sen.R) return estadoSEN["SA_SEM"];
   if (sen.CDV_O) return estadoSEN["CDV_O_SEM"];
   if (sen.V&&!sen.VF) return estadoSEN["V"];
   if (sen.V&&sen.VF) return estadoSEN["VF"];
 };
 const getColorStrokeSenManUsoCom = (sen) => {
   if (sen.SD) return estadoSEN["SD"];
-  if (sen.SA) return estadoSEN["SA_STROKE"];
+  if (sen.R) return estadoSEN["SA_STROKE"];
   if (sen.CDV_O) return estadoSEN["CDV_O_STROKE"];
   if (sen.V) return estadoSEN["V"];
 };
@@ -572,35 +590,6 @@ return (
           strokeDasharray: "none",
           paintOrder: "markers stroke fill",
         }}
-      />
-      <path
-        d="M98.149 81.004h1.789V89.9h-1.789z"
-        style={{
-          display: "inline",
-          fill: "#fff",
-          stroke: "#fff",
-          strokeWidth: 0.393066,
-          strokeLinecap: "square",
-          strokeMiterlimit: 100,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
-          paintOrder: "markers stroke fill",
-        }}
-      />
-      <path
-        d="M-268.286 81.042h1.789v8.896h-1.789z"
-        style={{
-          display: "inline",
-          fill: "#fff",
-          stroke: "#fff",
-          strokeWidth: 0.393066,
-          strokeLinecap: "square",
-          strokeMiterlimit: 100,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
-          paintOrder: "markers stroke fill",
-        }}
-        transform="scale(-1 1)"
       />
     </g>
     {/*CDV_PRIN*/}
@@ -8436,23 +8425,21 @@ return (
         }}
       >
         <path
-          d="m79.845 15.758 3.033-1.462-3.033-1.57v3.032"
+          d="M243.5 52a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
-            display: "inline",
             fill: "red",
-            fillOpacity: 1,
             stroke: "#fff",
-            strokeWidth: 0.266667,
+            strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
             strokeMiterlimit: 10,
             strokeDasharray: "none",
             strokeOpacity: 1,
           }}
-          transform="matrix(-1.5 0 0 1.5 214.332 64.09)"
+          transform="rotate(180 168.864 67.591)"
         />
         <path
-          d="M78.106 13.104v2.443-1.243h1.446"
+          d="M77 13.104v2.443-1.243h1.446"
           style={{
             fill: "none",
             stroke: "#fff",
@@ -9614,47 +9601,6 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(-1.4999 0 0 1.5 444.02 31.566)"
-        />
-      </g>
-      {/*SEÑAL TOPERA LADO CIDADELA*/}
-      <g
-        style={{
-          display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333333,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
-        }}
-      >
-        <path
-          d="m79.845 15.758 3.033-1.462-3.033-1.57v3.032"
-          style={{
-            display: "inline",
-            fill: "red",
-            fillOpacity: 1,
-            stroke: "#fff",
-            strokeWidth: 0.266667,
-            strokeLinecap: "round",
-            strokeLinejoin: "round",
-            strokeMiterlimit: 10,
-            strokeDasharray: "none",
-            strokeOpacity: 1,
-          }}
-          transform="matrix(1.5 0 0 1.5 152.038 64.128)"
-        />
-        <path
-          d="M78.106 13.104v2.443-1.243h1.446"
-          style={{
-            fill: "none",
-            stroke: "#fff",
-            strokeWidth: 0.334083,
-            strokeLinecap: "square",
-            strokeLinejoin: "miter",
-            strokeMiterlimit: 10,
-            strokeDasharray: "none",
-            strokeOpacity: 1,
-          }}
-          transform="matrix(1.5 0 0 1.5 152.038 64.128)"
         />
       </g>
       <g
@@ -16259,6 +16205,113 @@ return (
         }}
       >
         {"ENTRADA OESTE"}
+      </tspan>
+    </text>
+    <text
+      xmlSpace="preserve"
+      x={10}
+      y={210}
+      style={{
+        fontSize: "4.175px",
+        fill: "#fff",
+        fillOpacity: 1,
+        stroke: "#fff",
+        strokeWidth: 0.1,
+        strokeLinecap: "square",
+        strokeLinejoin: "miter",
+        strokeMiterlimit: 100,
+        strokeDasharray: "none",
+        strokeDashoffset: 0,
+        strokeOpacity: 1,
+        paintOrder: "markers stroke fill",
+      }}
+    >
+      <tspan
+        x={5}
+        y={215}
+        style={{
+          fontStyle: "normal",
+          fontVariant: "normal",
+          fontWeight: 400,
+          fontStretch: "normal",
+          fontFamily: "Arial",
+          InkscapeFontSpecification: "Arial",
+          fill: "#fff",
+          strokeWidth: 0.1,
+        }}
+      >
+        {"USUARIO: " + username}
+      </tspan>
+    </text>
+    <g>
+      {/* Cuadrado Azul */}
+      <rect 
+        x="430" y="210.5" 
+        width="5" height="5" 
+        fill={activeSquare === 0 ? "#ff0000" : "#440000"} 
+        style={{ transition: 'fill 0.3s ease' }}
+      />
+      
+      {/* Cuadrado Azul */}
+      <rect 
+        x="435" y="210.5" 
+        width="5" height="5" 
+        fill={activeSquare === 1 ? "#0000ff" : "#000044"} 
+        style={{ transition: 'fill 0.3s ease' }}
+      />
+      
+      {/* Cuadrado Verde */}
+      <rect 
+        x="440" y="210.5" 
+        width="5" height="5" 
+        fill={activeSquare === 2 ? "#00ff00" : "#004400"} 
+        style={{ transition: 'fill 0.3s ease' }}
+      />
+    </g>
+    <text
+      xmlSpace="preserve"
+      x={450}
+      y={215}
+      style={{
+        fontSize: "4.175px",
+        fill: "#fff",
+        fillOpacity: 1,
+        stroke: "#fff",
+        strokeWidth: 0.1,
+        strokeLinecap: "square",
+        strokeLinejoin: "miter",
+        strokeMiterlimit: 100,
+        strokeDasharray: "none",
+        strokeDashoffset: 0,
+        strokeOpacity: 1,
+        paintOrder: "markers stroke fill",
+      }}
+    >
+      <tspan
+        x={450}
+        y={215}
+        style={{
+          fontStyle: "normal",
+          fontVariant: "normal",
+          fontWeight: 400,
+          fontStretch: "normal",
+          fontFamily: "Arial",
+          InkscapeFontSpecification: "Arial",
+          fill: "#fff",
+          strokeWidth: 0.1,
+        }}
+      >
+        {currentTime.toLocaleString('es-ES', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        })} -  
+        {currentTime.toLocaleString('es-ES', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        })}
       </tspan>
     </text>
     <text

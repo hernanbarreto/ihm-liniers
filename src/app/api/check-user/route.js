@@ -18,7 +18,7 @@ export async function POST(req) {
     }
 
     // Buscar usuario en la base de datos
-    const [rows] = await db.query("SELECT id, role FROM users WHERE id = ?", [decoded.id]);
+    const [rows] = await db.query("SELECT id, role, username FROM users WHERE id = ?", [decoded.id]);
 
     if (rows.length === 0) {
       return new Response(JSON.stringify({ exists: false, message: "Usuario no encontrado" }), { status: 404 });
@@ -26,8 +26,9 @@ export async function POST(req) {
 
     const userRole = rows[0].role;
     const userId = rows[0].id;
+    const userName = rows[0].username;
 
-    return new Response(JSON.stringify({ exists: true, role: userRole, id: userId }), { status: 200 });
+    return new Response(JSON.stringify({ exists: true, role: userRole, id: userId, username: userName }), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ exists: false, message: "Error en el servidor", error: error.message }), { status: 500 });
   }

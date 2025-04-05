@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { TextField, Button, Box, Typography, Alert } from "@mui/material";
+import { TextField, Button, Box, Typography, Alert, Stack, Divider } from "@mui/material";
+import LogoCliente from "../media/logocliente";
+import LogoEmpresa from "../media/logoempresa";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -36,7 +38,18 @@ export default function LoginPage() {
       justifyContent="center" 
       alignItems="center" 
       minHeight="100vh" 
-      bgcolor="#1a2b3c"  // Fondo oscuro con toques de azul (similar a colores ferroviarios)
+      bgcolor="#1a2b3c"
+      onContextMenu={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      sx={{
+        "& *": {
+          userSelect: 'none',
+          "-webkit-user-select": 'none',
+          "-moz-user-select": 'none',
+        }
+      }}
     >
       <Box 
         component="form" 
@@ -48,10 +61,51 @@ export default function LoginPage() {
         width="100%" 
         maxWidth="400px"
       >
-        <Typography variant="h4" align="center" color="#fff" mb={2}>
+        {/* Logos en la parte superior */}
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <Box sx={{ 
+            width: 100, 
+            height: 50,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <LogoCliente sx={{ 
+              maxWidth: '100%', 
+              maxHeight: '100%',
+              width: 'auto',
+              height: 'auto',
+              objectFit: 'contain'
+            }} />
+          </Box>
+          
+          <Box sx={{ 
+            width: 100, 
+            height: 50,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <LogoEmpresa sx={{ 
+              maxWidth: '100%', 
+              maxHeight: '100%',
+              width: 'auto',
+              height: 'auto',
+              objectFit: 'contain'
+            }} />
+          </Box>
+        </Stack>
+
+        {/* Título debajo de los logos */}
+        <Typography variant="h5" align="center" color="#fff" sx={{ 
+          fontWeight: 'bold',
+          mt: 2,
+          mb: 3
+        }}>
           Iniciar Sesión
         </Typography>
-        
+
+        {/* Campos de formulario */}
         <TextField
           label="Usuario"
           variant="outlined"
@@ -90,7 +144,7 @@ export default function LoginPage() {
           variant="contained" 
           color="primary" 
           fullWidth 
-          sx={{ mt: 3 }}
+          sx={{ mt: 3, py: 1.5 }}
         >
           Ingresar
         </Button>

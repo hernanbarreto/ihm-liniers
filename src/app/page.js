@@ -3,14 +3,35 @@ import * as React from 'react';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Mimico from "./media/mimico";
-import { Box, Button, AppBar, Toolbar, Table, TableBody, TableHead, TableRow } from "@mui/material";
+import { 
+  Box, 
+  AppBar,
+  IconButton, 
+  Tooltip, 
+  useMediaQuery,
+  Grid, 
+  Toolbar, 
+  Table, 
+  TableBody, 
+  TableHead, 
+  TableRow } from "@mui/material";
+import {
+  Settings as SettingsIcon,
+  Build as HardwareIcon,
+  Notifications as AlarmsIcon,
+  ExitToApp as LogoutIcon,
+  Help as HelpIcon,
+  Dashboard as DashboardIcon
+} from '@mui/icons-material';
 import TableContainer from '@mui/material/TableContainer';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 import { TableVirtuoso } from 'react-virtuoso';
 import { styled } from '@mui/material/styles';
+import Swal from 'sweetalert2';
 
 import LogoCliente from "./media/logocliente";
+import LogoEmpresa from "./media/logoempresa";
 
 import { useDatabase } from './components/DatabaseContext';
 import useDatabaseListener from './components/useDatabaseListener';
@@ -20,6 +41,7 @@ export default function Home() {
   const [showMimico, setShowMimico] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState(null);
 
   {/*L: LIBRE*/}
   {/*O: OCUPADO*/}
@@ -29,8 +51,8 @@ export default function Home() {
   {/*DES: DESLIZAMIENTO*/}
   {/*REQ: REQUERIDO*/}
   const [ArrayCDV, setArrayCDV] = useState({});
-
   const [ArrayMDC, setArrayMDC] = useState({});
+  const [ArraySEN_MAN, setArraySEN_MAN] = useState({});
 
   const router = useRouter();
   
@@ -50,17 +72,6 @@ export default function Home() {
     "SD": SIN DATOS, 
     "X": BLOQUEADA*/
   }
-  const ArraySEN_MAN = {
-    "LS53":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
-    "LS50":{"R": false, "RF": false, "G": false, "GF": false, "V": null, "VF": null, "SA": null, "CDV_O": null, "IR": false, "SD": true, "X": false, "RUTA": '2'},
-    "LS51":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
-    "LS59":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
-    "LS57":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
-    "LS54":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '3'},
-    "LS55":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '2'},
-    "LS56":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": null},
-    "LS52":{"R": false, "RF": false, "G": false, "GF": false, "V": false, "VF": false, "SA": false, "CDV_O": false, "IR": false, "SD": true, "X": false, "RUTA": '3'},
-  };
 
   // Reaccionar a los cambios detectados
   useEffect(() => {
@@ -110,6 +121,27 @@ export default function Home() {
                 };
               });
             setArrayMDC(prev => ({ ...prev, ...updatedMDCs }));  
+          }else{
+            if (change.table === 'sen_man') {
+              const updatedSEN_MANs = {};
+                change.affectedRows.forEach(row => {
+                  const newV = row.after;
+                  updatedSEN_MANs[newV.SEN] = {
+                    R: newV.R,
+                    RF: newV.RF,
+                    G: newV.G,
+                    GF: newV.GF,
+                    V: newV.V,
+                    VF: newV.VF,
+                    CDV_O: newV.CDV_O,
+                    IR: newV.IR,
+                    SD: newV.SD,
+                    X: newV.X,
+                    RUTA: newV.RUTA,
+                  };
+                });
+              setArraySEN_MAN(prev => ({ ...prev, ...updatedSEN_MANs }));  
+            }
           }
         }
       }
@@ -139,6 +171,7 @@ export default function Home() {
           if (data.exists) {
             setUserRole(data.role);
             setUserId(data.id);
+            setUserName(data.username);
           } else {
             handleLogout();
           }
@@ -182,7 +215,7 @@ export default function Home() {
   
         getData();
     }else{
-      setShowMimico(false);
+      clearOperador();
     }
   }, [userRole]);
 
@@ -217,21 +250,103 @@ export default function Home() {
   
         getData();
     }else{
-      setShowMimico(false);
+      clearOperador();
     }
   }, [userRole]);
 
   useEffect(() => {
-    if ((Object.keys(ArrayCDV).length)&&(Object.keys(ArrayMDC).length)){
+    if (userRole === 'operador'){  
+        const getData = async () => {
+          try {
+            const response = await fetch("/api/get-states-sen_man", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(),
+            });
+  
+            const data = await response.json();
+
+            if (data.exists) {
+              setArraySEN_MAN(prev => {
+                const newState = { ...prev, ...data.data };
+                return newState;
+              });
+            } else {
+              handleLogout();
+            }
+          } catch (error) {
+            console.error("Error datos:", error);
+            handleLogout();
+          }
+        };
+  
+        getData();
+    }else{
+      clearOperador();
+    }
+  }, [userRole]);
+
+  useEffect(() => {
+    if ((Object.keys(ArrayCDV).length)&&(Object.keys(ArrayMDC).length)&&(Object.keys(ArraySEN_MAN).length)){
       setShowMimico(true);
     }
-  }, [ArrayCDV, ArrayMDC]);
+  }, [ArrayCDV, ArrayMDC, ArraySEN_MAN]);
 
+
+  const useBreakpoints = () => {
+    const isSm = useMediaQuery('(max-width:899px)');
+    const isMd = useMediaQuery('(min-width:900px) and (max-width:1199px)');
+    const isLg = useMediaQuery('(min-width:1200px)');
+    
+    return { isSm, isMd, isLg };
+  };
+
+  const { isSm, isMd, isLg } = useBreakpoints();
+
+  // Funciones de los botones (placeholder)
+  const handleSettings = () => console.log('Abrir configuración');
+  const handleHardware = () => console.log('Diagnóstico de hardware');
+  const handleAlarms = () => console.log('Alarmas y eventos');
+  const handleHelp = () => console.log('Ayuda');
+  const handleDashboard = () => console.log('Panel de control');
 
   const handleLogout = () => {
+    clearOperador();
     localStorage.removeItem("token");
     localStorage.removeItem("userId"); // Asegúrate de eliminar también el ID del usuario
     router.push("/login");
+  };
+
+  const handleLogoutClick = () => {
+    Swal.fire({
+      title: '¿Cerrar sesión?',
+      text: "¿Está seguro que desea salir del sistema?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d32f2f',
+      cancelButtonColor: '#5c6bc0',
+      confirmButtonText: 'Sí, salir',
+      cancelButtonText: 'Cancelar',
+      backdrop: `
+        rgba(0,0,0,0.7)
+        url("/images/exit-animation.gif")
+        center top
+        no-repeat
+      `
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleLogout();
+      }
+    });
+  };
+
+  const clearOperador = () => {
+    setShowMimico(false);
+    setArrayCDV({});
+    setArrayMDC({});
+    setArraySEN_MAN({});
   };
 
   if (!isAuthenticated) return null;
@@ -323,34 +438,221 @@ export default function Home() {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100vh", backgroundColor: "black" }}>
-      <AppBar position="sticky" sx={{ backgroundColor: "#222a4f", padding: "0 16px", height: 120, userSelect: 'none'}}>
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: 120 }}>
-          <Box sx={{ display: "flex", alignItems: "center", height: 120, width: "210px", backgroundColor: "#222a4f", paddingX: "10px" }}>
-            <LogoCliente sx={{ maxWidth: "100%", height: "auto", objectFit: "contain" }} />
-          </Box>
 
-          {userRole === "operador" ? (
-            <Box sx={{ display: "flex", alignItems: "center", height: 120, width: '100%', backgroundColor: "#222a4f", paddingRight: '10px', paddingTop: '0px' }}>
-              <Paper style={{ height: 110, width: '100%' }}>
-                <TableVirtuoso
-                  data={alarms}
-                  components={VirtuosoTableComponents}
-                  fixedHeaderContent={fixedHeaderContent}
-                  itemContent={rowContent}
-                />
-              </Paper>
-            </Box>
-          ) : null}
-          <Button onClick={handleLogout} sx={{ color: "white", "&:hover": { backgroundColor: "#d32f2f" }, backgroundColor: "#f44336", padding: "6px 12px", borderRadius: "4px" }}>
-            Cerrar sesión
-          </Button>
-        </Toolbar>
-      </AppBar>
+  <AppBar position="sticky" sx={{ 
+  backgroundColor: "#222a4f", 
+  padding: isSm ? "0 8px" : "0 16px", 
+  height: isSm ? 100 : 120,
+  userSelect: 'none'
+}}
+onContextMenu={(e) => {
+  e.preventDefault();
+  e.stopPropagation();
+}}  
+>
+  <Toolbar sx={{ 
+    display: "flex", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    height: '100%',
+    gap: isSm ? 1 : 2,
+    padding: '0 !important'
+  }}>
+    {/* Logo del Cliente - Tamaño fijo */}
+    <Box sx={{ 
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      height: '100%',
+      width: 180, // Tamaño fijo igual para ambos logos
+      minWidth: 180,
+      backgroundColor: "#222a4f",
+      paddingX: "8px",
+      overflow: "hidden",
+      flexShrink: 0
+    }}>
+      <LogoCliente sx={{ 
+        width: "100%",
+        height: "auto",
+        maxHeight: "80px",
+        objectFit: "contain"
+      }} />
+    </Box>
+
+    {/* Tabla optimizada - Ahora con más espacio */}
+    {userRole === "operador" && (isMd || isLg) && (
+      <Box sx={{ 
+        display: "flex", 
+        alignItems: "center", 
+        height: '100%',
+        flexGrow: 1,
+        backgroundColor: "#222a4f", 
+        marginX: 2,
+        maxWidth: 'calc(100% - 480px)' // Más espacio para la tabla
+      }}>
+        <Paper style={{ 
+          height: isSm ? 90 : 110, 
+          width: '100%',
+          overflow: 'auto'
+        }}>
+          <TableVirtuoso
+            data={alarms}
+            components={VirtuosoTableComponents}
+            fixedHeaderContent={fixedHeaderContent}
+            itemContent={rowContent}
+          />
+        </Paper>
+      </Box>
+    )}
+
+    {/* Contenedor para botones y logo empresa */}
+    <Box sx={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: isSm ? 1 : 2,
+      marginLeft: 'auto',
+      flexShrink: 0
+    }}>
+      {/* Matriz de botones compacta */}
+      <Grid container spacing={1} sx={{
+        width: 'auto',
+        maxWidth: 300,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: 1
+      }}>
+          {/* Botón 1: Configuración */}
+          <Grid item>
+            <Tooltip title="Configuración">
+              <IconButton 
+                color="inherit" 
+                onClick={handleSettings}
+                sx={{ 
+                  backgroundColor: 'rgba(255,255,255,0.1)', 
+                  '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' },
+                  padding: isSm ? '8px' : '12px'
+                }}
+              >
+                <SettingsIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          
+          {/* Botón 2: Diagnóstico */}
+          <Grid item>
+            <Tooltip title="Diagnóstico de hardware">
+              <IconButton 
+                color="inherit" 
+                onClick={handleHardware}
+                sx={{ 
+                  backgroundColor: 'rgba(255,255,255,0.1)', 
+                  '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' },
+                  padding: isSm ? '8px' : '12px'
+                }}
+              >
+                <HardwareIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          
+          {/* Botón 3: Alarmas */}
+          <Grid item>
+            <Tooltip title="Alarmas y eventos">
+              <IconButton 
+                color="inherit" 
+                onClick={handleAlarms}
+                sx={{ 
+                  backgroundColor: 'rgba(255,255,255,0.1)', 
+                  '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' },
+                  padding: isSm ? '8px' : '12px'
+                }}
+              >
+                <AlarmsIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          
+          {/* Botón 4: Panel de control */}
+          <Grid item>
+            <Tooltip title="Panel de control">
+              <IconButton 
+                color="inherit" 
+                onClick={handleDashboard}
+                sx={{ 
+                  backgroundColor: 'rgba(255,255,255,0.1)', 
+                  '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' },
+                  padding: isSm ? '8px' : '12px'
+                }}
+              >
+                <DashboardIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          
+          {/* Botón 5: Ayuda */}
+          <Grid item>
+            <Tooltip title="Ayuda">
+              <IconButton 
+                color="inherit" 
+                onClick={handleHelp}
+                sx={{ 
+                  backgroundColor: 'rgba(255,255,255,0.1)', 
+                  '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' },
+                  padding: isSm ? '8px' : '12px'
+                }}
+              >
+                <HelpIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          
+          {/* Botón 6: Salir */}
+          <Grid item>
+            <Tooltip title="Salir">
+              <IconButton 
+                color="error" 
+                onClick={handleLogoutClick}
+                sx={{ 
+                  backgroundColor: 'rgba(255,255,255,0.1)', 
+                  '&:hover': { backgroundColor: 'rgba(255,0,0,0.3)' },
+                  padding: isSm ? '8px' : '12px'
+                }}
+              >
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
+        </Grid>
+      </Grid>
+
+      {/* Logo de la Empresa - Mismo tamaño que LogoCliente */}
+      <Box sx={{ 
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: 'center',
+        height: '100%',
+        width: 180, // Mismo tamaño que LogoCliente
+        minWidth: 180,
+        backgroundColor: "#222a4f",
+        paddingX: "8px",
+        flexShrink: 0
+      }}>
+        <LogoEmpresa sx={{ 
+          width: "100%",
+          height: "auto",
+          maxHeight: "80px",
+          objectFit: "contain"
+        }} />
+      </Box>
+    </Box>
+  </Toolbar>
+</AppBar>
+
 
       <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "black", overflow: "hidden", paddingTop: 2 }}>
         {(showMimico) ? (
           <Mimico 
             className="w-full h-full object-contain" 
+            username={userName}
             cdv_prin={ArrayCDV} 
             mdc={ArrayMDC} 
             sen_man={ArraySEN_MAN}

@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
     <DatabaseProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          {children}
+            {children}
         </body>
       </html>
     </DatabaseProvider>
