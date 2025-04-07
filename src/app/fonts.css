@@ -1,0 +1,23 @@
+/* Geist Sans */
+@font-face {
+    font-family: 'Geist';
+    src: url('/fonts/geist/geist-v1-latin-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  /* Geist Mono */
+  @font-face {
+    font-family: 'Geist Mono';
+    src: url('/fonts/geist/geist-mono-v1-latin-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  /* Variables CSS */
+  :root {
+    --font-geist-sans: 'Geist', sans-serif;
+    --font-geist-mono: 'Geist Mono', monospace;
+  }

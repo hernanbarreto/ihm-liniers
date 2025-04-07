@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useState, useEffect } from 'react';
 
-const Mimico = ({username, cdv_prin = {}, mdc = {}, sen_man = {},...props}) => {
+const Mimico = ({username, cdv_prin = {}, mdc = {}, sen_man = {}, sen_prin = {},...props}) => {
 const [currentTime, setCurrentTime] = useState(new Date());
 const [activeSquare, setActiveSquare] = useState(0);
 
@@ -66,9 +66,13 @@ const getCDVColorCAM = (cdv, mdc, pos) => {
 
 const estadoSEN = {
   "R":"#FF0000",
+  "Y":"yellow",
+  "YY":"yellow",
   "G":"#00FF00",
   "RF": "#000000",
   "GF": "#000000",
+  "YF": "#000000",
+  "YYF": "#000000",
   "SD": "#808080",
   "SA_SEM": "#000000",
   "SA_STROKE": "#FFFFFF",
@@ -104,6 +108,36 @@ const getColorStrokeSenManUsoCom = (sen) => {
   if (sen.R) return estadoSEN["SA_STROKE"];
   if (sen.CDV_O) return estadoSEN["CDV_O_STROKE"];
   if (sen.V) return estadoSEN["V"];
+};
+
+const getColorSenPrin = (sen) => {
+  if (sen.SD) return estadoSEN["SD"];
+  if (sen.R&&!sen.RF) return estadoSEN["R"];
+  if (sen.R&&sen.RF) return estadoSEN["RF"];
+  if (sen.Y&&!sen.YF) return estadoSEN["Y"];
+  if (sen.Y&&sen.YF) return estadoSEN["YF"];
+  if (sen.G&&!sen.GF) return estadoSEN["G"];
+  if (sen.G&&sen.GF) return estadoSEN["GF"];
+};
+
+const getColorStrokeSenPrin = (sen) => {
+  if (sen.SD) return estadoSEN["SD"];
+  if (sen.R) return estadoSEN["R"];
+  if (sen.G) return estadoSEN["G"];
+  if (sen.Y) return estadoSEN["Y"];
+};
+
+const getColorSenPrinYY = (sen) => {
+  if (sen.SD) return estadoSEN["SD"];
+  if (sen.YY&&!sen.YYF) return estadoSEN["YY"];
+  if (sen.YY&&sen.YYF) return estadoSEN["YYF"];
+  else return "#000000";
+};
+
+const getColorStrokeSenPrinYY = (sen) => {
+  if (sen.SD) return estadoSEN["SD"];
+  if (sen.YY) return estadoSEN["YY"];
+  else return "#FFFFFF";
 };
 
 const handleLeftClick = (e) => {
@@ -289,8 +323,103 @@ return (
       <clipPath id="ab" clipPathUnits="userSpaceOnUse">
         <path d="M-31921.776 4984.001h78516v-14672h-78516v14672" />
       </clipPath>
+      <linearGradient
+        xlinkHref="#linearGradient44"
+        id="linearGradient45"
+        x1="0"
+        x2="500.014"
+        y1="215.018"
+        y2="215.018"
+        gradientTransform="matrix(.02 0 0 49.81746 82.02 -10856.363)"
+        gradientUnits="userSpaceOnUse"
+      ></linearGradient>
+      <linearGradient id="linearGradient44">
+        <stop id="stop44" offset="0" stopColor="#666" stopOpacity="1"></stop>
+        <stop id="stop45" offset="1" stopColor="#666" stopOpacity="0"></stop>
+      </linearGradient>
     </defs>
+    <g
+      id="g47"
+      fill="none"
+      fillOpacity="1"
+      fillRule="nonzero"
+      stroke="#fff"
+      strokeDashoffset="0"
+      strokeLinecap="square"
+      strokeMiterlimit="100"
+      strokeOpacity="0.267"
+      strokeWidth="0.69"
+      display="inline"
+      paintOrder="markers stroke fill"
+    >
+      <path
+        id="path47"
+        strokeDasharray="0.69, 1.38"
+        d="M466.005 13.758v73.237"
+        display="inline"
+      ></path>
+      <path
+        id="path47-3"
+        strokeDasharray="0.69, 1.37999"
+        d="M474.535 87.082v116.27"
+        display="inline"
+      ></path>
+      <path
+        id="path47-4"
+        strokeDasharray="0.69, 1.38001"
+        d="M474.532 86.898h-8.522"
+        display="inline"
+      ></path>
+    </g>
+    <g
+      id="g1"
+      fill="none"
+      fillOpacity="1"
+      fillRule="nonzero"
+      stroke="#fff"
+      strokeDashoffset="0"
+      strokeLinecap="square"
+      strokeMiterlimit="100"
+      strokeOpacity="0.267"
+      strokeWidth="0.69"
+      paintOrder="markers stroke fill"
+    >
+      <path
+        id="path47-45"
+        strokeDasharray="0.689868, 1.37974"
+        d="M20.867 13.696v60.008"
+        display="inline"
+      ></path>
+      <path
+        id="path47-3-4"
+        strokeDasharray="0.69, 1.37998"
+        d="M10.876 73.693v129.638"
+        display="inline"
+      ></path>
+      <path
+        id="path47-4-9"
+        strokeDasharray="0.69, 1.38001"
+        d="M10.932 73.669h9.865"
+        display="inline"
+      ></path>
+    </g>
     {/*EDIFICIO*/}
+    <g>
+      <path
+        id="rect5"
+        fill="url(#linearGradient45)"
+        fillRule="nonzero"
+        stroke="none"
+        strokeLinecap="round"
+        strokeMiterlimit="100"
+        strokeWidth="0"
+        d="M82.021-394.696h10v500h-10z"
+        display="inline"
+        paintOrder="markers stroke fill"
+        style={{ mixBlendMode: "normal" }}
+        transform="translate(105, 125) rotate(90)"
+      ></path>
+    </g>
     <g
       style={{
         display: "inline",
@@ -6520,7 +6649,6 @@ return (
       <g
         style={{
           display: "inline",
-          fill: "#0f0",
         }}
       >
         <path
@@ -6528,7 +6656,7 @@ return (
           style={{
             display: "inline",
             opacity: 1,
-            fill: "red",
+            fill: "GRAY",
             fillOpacity: 1,
             stroke: "#000",
             strokeWidth: 0.90366,
@@ -6557,7 +6685,7 @@ return (
               display: "inline",
               fill: "none",
               fillOpacity: 1,
-              stroke: "red",
+              stroke: "GRAY",
               strokeWidth: 0.904,
               strokeLinecap: "round",
               strokeLinejoin: "round",
@@ -6585,7 +6713,7 @@ return (
               display: "inline",
               fill: "none",
               fillOpacity: 1,
-              stroke: "red",
+              stroke: "GRAY",
               strokeWidth: 0.904,
               strokeLinecap: "round",
               strokeLinejoin: "round",
@@ -6598,8 +6726,7 @@ return (
         </g>
         <g
           style={{
-            display: "inline",
-            fill: "#00f",
+            display: "none",
           }}
         >
           <path
@@ -6657,7 +6784,6 @@ return (
       <g
         style={{
           display: "inline",
-          fill: "#0f0",
         }}
       >
         <path
@@ -6665,7 +6791,7 @@ return (
           style={{
             display: "inline",
             opacity: 1,
-            fill: "red",
+            fill: "gray",
             fillOpacity: 1,
             stroke: "#000",
             strokeWidth: 0.90366,
@@ -6695,7 +6821,7 @@ return (
               display: "inline",
               fill: "none",
               fillOpacity: 1,
-              stroke: "red",
+              stroke: "gray",
               strokeWidth: 0.904,
               strokeLinecap: "round",
               strokeLinejoin: "round",
@@ -6723,7 +6849,7 @@ return (
               display: "inline",
               fill: "none",
               fillOpacity: 1,
-              stroke: "red",
+              stroke: "gray",
               strokeWidth: 0.904,
               strokeLinecap: "round",
               strokeLinejoin: "round",
@@ -6736,8 +6862,7 @@ return (
         </g>
         <g
           style={{
-            display: "inline",
-            fill: "#00f",
+            display: "none",
           }}
         >
           <path
@@ -6797,7 +6922,6 @@ return (
       <g
         style={{
           display: "inline",
-          fill: "#0f0",
         }}
       >
         <path
@@ -6805,7 +6929,7 @@ return (
           style={{
             display: "inline",
             opacity: 1,
-            fill: "red",
+            fill: "gray",
             fillOpacity: 1,
             stroke: "#000",
             strokeWidth: 0.90366,
@@ -6835,7 +6959,7 @@ return (
               display: "inline",
               fill: "none",
               fillOpacity: 1,
-              stroke: "red",
+              stroke: "gray",
               strokeWidth: 0.904,
               strokeLinecap: "round",
               strokeLinejoin: "round",
@@ -6863,7 +6987,7 @@ return (
               display: "inline",
               fill: "none",
               fillOpacity: 1,
-              stroke: "red",
+              stroke: "gray",
               strokeWidth: 0.904,
               strokeLinecap: "round",
               strokeLinejoin: "round",
@@ -6876,8 +7000,7 @@ return (
         </g>
         <g
           style={{
-            display: "inline",
-            fill: "#00f",
+            display: "none",
           }}
         >
           <path
@@ -6954,8 +7077,8 @@ return (
         <path
           d="M30.51 42.622a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
-            fill: "red",
-            stroke: "white",
+            fill: getColorSenPrin(sen_prin["LS6A"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS6A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -6963,14 +7086,28 @@ return (
             strokeDasharray: "none",
             strokeOpacity: 1,
           }}
-          transform="matrix(-1 0 0 1 520.677 63.388)"
+          transform="matrix(-1 0 0 1 520.677 61)"
+        />
+        <path
+          d="M30.51 42.622a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
+          style={{
+            fill: getColorSenPrinYY(sen_prin["LS6A"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS6A"]),
+            strokeWidth: 0.5,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1 0 0 1 516.177 61)"
         />
         {/*POSTE*/}
         <path
           d="M26.125 38.834v3.665-1.865h2.158"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS6A"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -6978,14 +7115,14 @@ return (
             strokeDasharray: "none",
             strokeOpacity: 1,
           }}
-          transform="matrix(-1 0 0 1 520.677 63.388)"
+          transform="matrix(-1 0 0 1 520.677 61)"
         />
         {/*SEMAFORO B*/}
         <path
           d="M29.451 38.124a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS6B"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS6B"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -6993,14 +7130,14 @@ return (
             strokeDasharray: "none",
             strokeOpacity: 1,
           }}
-          transform="matrix(-1 0 0 1 520.677 63.388)"
+          transform="matrix(-1 0 0 1 520.677 61)"
         />
         {/*POSTE B*/}
         <path
           d="M26.866 36.446v3.806M27.322 36.125h-.457"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS6B"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7008,11 +7145,45 @@ return (
             strokeDasharray: "none",
             strokeOpacity: 1,
           }}
-          transform="matrix(-1 0 0 1 520.677 63.388)"
+          transform="matrix(-1 0 0 1 520.677 61)"
+        />
+        <path
+          d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
+          style={{
+            display: sen_prin["LS6A"].BD?"inline":"none",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="rotate(180 238 59.834) scale(1.5)"
+        />
+        <path
+          d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
+          style={{
+            display: sen_prin["LS6B"].BD?"inline":"none",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="rotate(180 238 59.834) scale(1.5)"
         />
       </g>
+      {/*PRINCIPAL A71*/}
       <g
         style={{
+          display: "inline",
           stroke: "#fff",
           strokeWidth: 0.333333,
           strokeDasharray: "none",
@@ -7022,8 +7193,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["A71"]),
+            stroke: getColorStrokeSenPrin (sen_prin["A71"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7031,13 +7202,29 @@ return (
             strokeDasharray: "none",
             strokeOpacity: 1,
           }}
-          transform="matrix(1.5 0 0 1.5 353.406 12.657)"
+          transform="matrix(1.5 0 0 1.5 353.5 8.867)"
+        />
+        <path
+          d="m88.158 12.294 2.094-.955-2.094-1.027v1.982"
+          style={{
+            display: sen_prin["A71"].BD?"inline":"none",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 1.5 353.5 8.867)"
         />
         <path
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["A71"]),
             strokeWidth: 0.333333,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7045,7 +7232,7 @@ return (
             strokeDasharray: "none",
             strokeOpacity: 1,
           }}
-          transform="matrix(1.5 0 0 1.5 353.406 12.657)"
+          transform="matrix(1.5 0 0 1.5 353.5 8.867)"
         />
       </g>
       <g
@@ -7060,8 +7247,8 @@ return (
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS3A"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS3A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7074,8 +7261,8 @@ return (
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS3A"]),
+            stroke: getColorStrokeSenPrinYY(sen_prin["LS3A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7089,7 +7276,7 @@ return (
           d="M26.125 36.717v3.665-1.865h2.158"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS3A"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7103,8 +7290,8 @@ return (
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS3B"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS3B"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7117,8 +7304,8 @@ return (
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS3B"]),
+            stroke: getColorStrokeSenPrinYY(sen_prin["LS3B"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7132,7 +7319,7 @@ return (
           d="M26.866 33.83v4.246"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS3B"]),
             strokeWidth: 0.528164,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7146,7 +7333,7 @@ return (
           d="M27.319 33.48h-.464"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS3B"]),
             strokeWidth: 0.503744,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7159,7 +7346,7 @@ return (
         <path
           d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS3B"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7175,7 +7362,7 @@ return (
         <path
           d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS3A"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7189,8 +7376,10 @@ return (
           transform="matrix(1.5 0 0 1.5 39.498 32.162)"
         />
       </g>
+      {/*PRINCIPAL A73*/}
       <g
         style={{
+          display: "inline",
           stroke: "#fff",
           strokeWidth: 0.333333,
           strokeDasharray: "none",
@@ -7200,8 +7389,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["A73"]),
+            stroke: getColorStrokeSenPrin (sen_prin["A73"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7209,13 +7398,29 @@ return (
             strokeDasharray: "none",
             strokeOpacity: 1,
           }}
-          transform="matrix(1.5 0 0 1.5 353.406 36.472)"
+          transform="matrix(1.5 0 0 1.5 353.5 32.162)"
+        />
+        <path
+          d="m88.158 12.294 2.094-.955-2.094-1.027v1.982"
+          style={{
+            display: sen_prin["A73"].BD?"inline":"none",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264927,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1.5 0 0 1.5 353.5 32.162)"
         />
         <path
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["A73"]),
             strokeWidth: 0.333333,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7223,7 +7428,7 @@ return (
             strokeDasharray: "none",
             strokeOpacity: 1,
           }}
-          transform="matrix(1.5 0 0 1.5 353.406 36.472)"
+          transform="matrix(1.5 0 0 1.5 353.5 32.162)"
         />
       </g>
       <g
@@ -7237,8 +7442,8 @@ return (
         <path
           d="M466.415 158.907a2.054 2.054 0 1 1 0-4.108 2.054 2.054 0 0 1 0 4.108"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS8A"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS8A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7249,10 +7454,24 @@ return (
           transform="translate(23.757 -8.975)"
         />
         <path
+          d="M466.415 158.907a2.054 2.054 0 1 1 0-4.108 2.054 2.054 0 0 1 0 4.108"
+          style={{
+            fill: getColorSenPrinYY(sen_prin["LS8A"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS8A"]),
+            strokeWidth: 0.5,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="translate(19.257 -8.975)"
+        />
+        <path
           d="M470.8 155.118v3.665-1.864h-2.158"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS8A"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7265,8 +7484,8 @@ return (
         <path
           d="M467.474 154.409a2.054 2.054 0 1 1 0-4.108 2.054 2.054 0 0 1 0 4.108"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS8B"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS8B"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7280,7 +7499,7 @@ return (
           d="M470.06 152.73v3.806M469.603 152.41h.457"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS8B"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7293,8 +7512,8 @@ return (
         <path
           d="M467.47 149.819a2.054 2.054 0 1 1 0-4.108 2.054 2.054 0 0 1 0 4.108"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS8C"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS8C"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7308,7 +7527,7 @@ return (
           d="M470.057 148.144v3.874M469.6 147.82h.457"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS8C"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7317,6 +7536,22 @@ return (
             strokeOpacity: 1,
           }}
           transform="translate(23.757 -8.975)"
+        />
+        <path
+          d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
+          style={{
+            display: (sen_prin["LS8A"].BD||sen_prin["LS8B"].BD||sen_prin["LS8C"].BD)?"inline":"none",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264935,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.4999 0 0 1.5 627 127)"
         />
       </g>
 
@@ -7332,8 +7567,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS22"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS22"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7346,8 +7581,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS22"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS22"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7360,7 +7595,7 @@ return (
         <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS22"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7377,7 +7612,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS22"]),
             strokeWidth: 0.333344,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7400,8 +7635,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS13"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS13"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7414,8 +7649,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS13"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS13"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7428,7 +7663,7 @@ return (
         <path
           d="m219.305 49.703 3.14-1.433-3.14-1.539v2.972"
           style={{
-            display: "inline",
+            display: sen_prin["LS13"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7445,7 +7680,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS13"]),
             strokeWidth: 0.333333,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7468,8 +7703,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS20"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS20"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7482,8 +7717,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS20"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS20"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7496,7 +7731,7 @@ return (
         <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS20"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7513,7 +7748,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS20"]),
             strokeWidth: 0.333344,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7536,8 +7771,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS18"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS18"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7550,8 +7785,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS18"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS18"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7564,7 +7799,7 @@ return (
         <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS18"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7581,7 +7816,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS18"]),
             strokeWidth: 0.333344,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7604,8 +7839,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS9"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS9"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7618,8 +7853,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS9"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS9"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7632,7 +7867,7 @@ return (
         <path
           d="m88.158 12.294 2.094-.955-2.094-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS9"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7649,7 +7884,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS9"]),
             strokeWidth: 0.333333,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7660,6 +7895,7 @@ return (
           transform="matrix(1.5 0 0 1.5 39.498 32.162)"
         />
       </g>
+      {/*SEÑAL LS32*/}
       <g
         style={{
           stroke: "#fff",
@@ -7671,8 +7907,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS32"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS32"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7685,8 +7921,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS32"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS32"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7699,7 +7935,7 @@ return (
         <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS32"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7716,7 +7952,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS32"]),
             strokeWidth: 0.333333,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7725,6 +7961,74 @@ return (
             strokeOpacity: 1,
           }}
           transform="matrix(-1.5 0 0 1.5 215.023 122.696)"
+        />
+      </g>
+      {/*SEÑAL A50*/}
+      <g
+        style={{
+          stroke: "#fff",
+          strokeWidth: 0.333333,
+          strokeDasharray: "none",
+          strokeOpacity: 1,
+        }}
+      >
+        <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: getColorSenPrin(sen_prin["A50"]),
+            stroke: getColorStrokeSenPrin (sen_prin["A50"]),
+            strokeWidth: 0.333333,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.5 0 0 1.5 144 74)"
+        />
+        <path
+          d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
+          style={{
+            fill: getColorSenPrinYY(sen_prin["A50"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["A50"]),
+            strokeWidth: 0.333333,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.5 0 0 1.5 139.5 74)"
+        />
+        <path
+          d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
+          style={{
+            display: sen_prin["A50"].BD?"inline":"none",
+            fill: "red",
+            fillOpacity: 1,
+            stroke: "#fff",
+            strokeWidth: 0.0264948,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.5 0 0 1.5 144 74)"
+        />
+        <path
+          d="M88.284 12.686v2.444-1.243h1.439"
+          style={{
+            fill: "none",
+            stroke: getColorStrokeSenPrin (sen_prin["A50"]),
+            strokeWidth: 0.333333,
+            strokeLinecap: "square",
+            strokeLinejoin: "miter",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1.5 0 0 1.5 144 74)"
         />
       </g>
       <g
@@ -7738,8 +8042,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS24"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS24"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7752,8 +8056,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS24"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS24"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7766,7 +8070,7 @@ return (
         <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS24"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7783,7 +8087,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS24"]),
             strokeWidth: 0.333333,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7805,8 +8109,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS30"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS30"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7819,8 +8123,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS30"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS30"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7833,7 +8137,7 @@ return (
         <path
           d="m82.56 96.945-3.14-1.433 3.14-1.539v2.972"
           style={{
-            display: "inline",
+            display: sen_prin["LS30"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7849,7 +8153,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS30"]),
             strokeWidth: 0.333344,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7871,8 +8175,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS26"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS26"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7885,7 +8189,7 @@ return (
         <path
           d="m88.13 12.154 2.094-.956-2.094-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS26"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7902,7 +8206,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS26"]),
             strokeWidth: 0.333344,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -7925,8 +8229,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS28"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS28"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -7939,7 +8243,7 @@ return (
         <path
           d="m88.13 12.154 2.094-.956-2.094-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS28"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -7956,7 +8260,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS28"]),
             strokeWidth: 0.333333,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8054,7 +8358,7 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {sen_man["LS50"].RUTA}
+            {!sen_man["LS50"].SD?sen_man["LS50"].RUTA:""}
           </tspan>
         </text>
         <path
@@ -8183,7 +8487,7 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {sen_man["LS59"].RUTA}
+            {!sen_man["LS59"].SD?sen_man["LS59"].RUTA:""}
           </tspan>
         </text>
         <path
@@ -8272,7 +8576,7 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {sen_man["LS57"].RUTA}
+            {!sen_man["LS57"].SD?sen_man["LS57"].RUTA:""}
           </tspan>
         </text>
         <path
@@ -8362,7 +8666,7 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {sen_man["LS54"].RUTA}
+            {!sen_man["LS54"].SD?sen_man["LS54"].RUTA:""}
           </tspan>
         </text>
         <path
@@ -8466,8 +8770,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "RED",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS7"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS7"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8480,8 +8784,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS7"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS7"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8494,7 +8798,7 @@ return (
         <path
           d="m88.158 12.294 2.094-.955-2.094-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS7"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -8511,7 +8815,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS7"]),
             strokeWidth: 0.333333,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8535,8 +8839,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS11"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS11"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8549,8 +8853,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS11"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS11"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8563,7 +8867,7 @@ return (
         <path
           d="m88.158 12.294 2.094-.955-2.094-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS11"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -8580,7 +8884,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS11"]),
             strokeWidth: 0.333333,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8604,8 +8908,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS21"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS21"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8618,8 +8922,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS21"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS21"]),
             strokeWidth: 0.333333,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8632,7 +8936,7 @@ return (
         <path
           d="m88.158 12.294 2.094-.955-2.094-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS21"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -8649,7 +8953,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS21"]),
             strokeWidth: 0.333333,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8673,8 +8977,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS10"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS10"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8687,8 +8991,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS10"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS10"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8701,7 +9005,7 @@ return (
         <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS10"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -8718,7 +9022,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS10"]),
             strokeWidth: 0.333344,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8742,8 +9046,8 @@ return (
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS5A"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS5A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8756,8 +9060,8 @@ return (
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
-            fill: "YELLOW",
-            stroke: "#fff",
+            fill: getColorSenPrinYY(sen_prin["LS5A"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS5A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8771,7 +9075,7 @@ return (
           d="M26.125 36.717v3.665-1.865h2.158"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS5A"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8785,8 +9089,8 @@ return (
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS5B"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS5B"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8800,7 +9104,7 @@ return (
           d="M26.866 33.83v4.246"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS5B"]),
             strokeWidth: 0.528164,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8814,7 +9118,7 @@ return (
           d="M27.319 33.48h-.464"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS5B"]),
             strokeWidth: 0.503744,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8827,7 +9131,7 @@ return (
         <path
           d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS5B"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -8843,7 +9147,7 @@ return (
         <path
           d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS5A"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -8899,14 +9203,14 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {"2"}
+            {!sen_prin["LS17"].SD?sen_prin["LS17"].RUTA:""}
           </tspan>
         </text>
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS17"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS17"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -8919,7 +9223,7 @@ return (
         <path
           d="m88.13 17.478 2.094-.956-2.094-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS17"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -8936,7 +9240,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS17"]),
             strokeWidth: 0.333344,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -8985,7 +9289,7 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {sen_man["LS55"].RUTA}
+            {!sen_man["LS55"].SD?sen_man["LS55"].RUTA:""}
           </tspan>
         </text>
         <path
@@ -9050,8 +9354,8 @@ return (
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS15A"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS15A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9062,10 +9366,24 @@ return (
           transform="matrix(1 0 0 -1 193.106 65.316)"
         />
         <path
+          d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
+          style={{
+            fill: getColorSenPrinYY(sen_prin["LS15A"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS15A"]),
+            strokeWidth: 0.5,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(1 0 0 -1 197.606 65.316)"
+        />
+        <path
           d="M26.125 36.717v3.665-1.865h2.158"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS15A"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9079,8 +9397,8 @@ return (
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS15B"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS15B"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9094,7 +9412,7 @@ return (
           d="M26.866 33.83v4.246"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS15B"]),
             strokeWidth: 0.528164,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9108,7 +9426,7 @@ return (
           d="M27.319 33.48h-.464"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS15B"]),
             strokeWidth: 0.503744,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9121,7 +9439,7 @@ return (
         <path
           d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS15B"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9137,7 +9455,7 @@ return (
         <path
           d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS15A"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9164,8 +9482,8 @@ return (
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS19A"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS19A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9176,10 +9494,24 @@ return (
           transform="translate(326.251 16.87)"
         />
         <path
+          d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
+          style={{
+            fill: getColorSenPrinYY(sen_prin["LS19A"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS19A"]),
+            strokeWidth: 0.5,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="translate(330.751 16.87)"
+        />
+        <path
           d="M26.125 36.717v3.665-1.865h2.158"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS19A"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9193,8 +9525,8 @@ return (
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS19B"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS19B"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9208,7 +9540,7 @@ return (
           d="M26.866 33.83v4.246"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS19B"]),
             strokeWidth: 0.528164,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9222,7 +9554,7 @@ return (
           d="M27.319 33.48h-.464"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS19B"]),
             strokeWidth: 0.503744,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9235,7 +9567,7 @@ return (
         <path
           d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS19B"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9251,7 +9583,7 @@ return (
         <path
           d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS19A"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9278,8 +9610,8 @@ return (
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS14A"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS14A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9290,10 +9622,24 @@ return (
           transform="matrix(-1 0 0 1 337.728 108.152)"
         />
         <path
+          d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
+          style={{
+            fill: getColorSenPrinYY(sen_prin["LS14A"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS14A"]),
+            strokeWidth: 0.5,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="matrix(-1 0 0 1 333.228 108.152)"
+        />
+        <path
           d="M26.125 36.717v3.665-1.865h2.158"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS14A"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9307,8 +9653,8 @@ return (
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS14B"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS14B"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9322,7 +9668,7 @@ return (
           d="M26.866 33.83v4.246"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS14B"]),
             strokeWidth: 0.528164,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9336,7 +9682,7 @@ return (
           d="M27.319 33.48h-.464"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS14B"]),
             strokeWidth: 0.503744,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9349,7 +9695,7 @@ return (
         <path
           d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS14B"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9365,7 +9711,7 @@ return (
         <path
           d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS14A"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9392,8 +9738,8 @@ return (
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS23A"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS23A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9407,7 +9753,7 @@ return (
           d="M26.125 36.717v3.665-1.865h2.158"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS23A"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9421,8 +9767,8 @@ return (
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS23B"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS23B"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9436,7 +9782,7 @@ return (
           d="M26.866 33.83v4.246"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS23B"]),
             strokeWidth: 0.528164,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9450,7 +9796,7 @@ return (
           d="M27.319 33.48h-.464"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS23B"]),
             strokeWidth: 0.503744,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9463,7 +9809,7 @@ return (
         <path
           d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS23B"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9479,7 +9825,7 @@ return (
         <path
           d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS23A"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9561,8 +9907,8 @@ return (
         <path
           d="M91.207 15.212a1.37 1.37 0 1 0 0-2.738 1.37 1.37 0 0 0 0 2.738"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS16"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS16"]),
             strokeWidth: 0.333344,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9575,7 +9921,7 @@ return (
         <path
           d="m88.13 12.154 2.094-.956-2.094-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS16"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9592,7 +9938,7 @@ return (
           d="M88.284 12.686v2.444-1.243h1.439"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS16"]),
             strokeWidth: 0.333344,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9616,8 +9962,8 @@ return (
         <path
           d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS12A"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS12A"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9628,10 +9974,24 @@ return (
           transform="rotate(180 168.864 67.591)"
         />
         <path
+          d="M30.51 40.506a2.054 2.054 0 1 0 0-4.108 2.054 2.054 0 0 0 0 4.108"
+          style={{
+            fill: getColorSenPrinYY(sen_prin["LS12A"]),
+            stroke: getColorStrokeSenPrinYY (sen_prin["LS12A"]),
+            strokeWidth: 0.5,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: 10,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+          }}
+          transform="rotate(180 166.6 67.591)"
+        />
+        <path
           d="M26.125 36.717v3.665-1.865h2.158"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS12A"]),
             strokeWidth: 0.5,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9645,8 +10005,8 @@ return (
         <path
           d="M29.451 35.478a2.054 2.054 0 1 0 0-4.107 2.054 2.054 0 0 0 0 4.107"
           style={{
-            fill: "red",
-            stroke: "#fff",
+            fill: getColorSenPrin(sen_prin["LS12B"]),
+            stroke: getColorStrokeSenPrin (sen_prin["LS12B"]),
             strokeWidth: 0.5,
             strokeLinecap: "round",
             strokeLinejoin: "round",
@@ -9660,7 +10020,7 @@ return (
           d="M26.866 33.83v4.246"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS12B"]),
             strokeWidth: 0.528164,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9674,7 +10034,7 @@ return (
           d="M27.319 33.48h-.464"
           style={{
             fill: "none",
-            stroke: "#fff",
+            stroke: getColorStrokeSenPrin (sen_prin["LS12B"]),
             strokeWidth: 0.503744,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -9687,7 +10047,7 @@ return (
         <path
           d="m-12.561 10.39 2.093-.955-2.093-1.026v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS12B"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9703,7 +10063,7 @@ return (
         <path
           d="M-12.561 18.822l2.093-.955-2.093-1.027v1.982"
           style={{
-            display: "inline",
+            display: sen_prin["LS12A"].BD?"inline":"none",
             fill: "red",
             fillOpacity: 1,
             stroke: "#fff",
@@ -9755,7 +10115,7 @@ return (
               strokeDasharray: "none",
             }}
           >
-            {sen_man["LS52"].RUTA}
+            {!sen_man["LS52"].SD?sen_man["LS52"].RUTA:""}
           </tspan>
         </text>
         <path
@@ -13758,216 +14118,377 @@ return (
         display: "inline",
       }}
     >
-      <text
-        xmlSpace="preserve"
-        x={478.299}
-        y={149.042}
+      <g
         style={{
-          fontSize: ".428625px",
           display: "inline",
-          fill: "#ff0",
-          strokeWidth: 0.0357188,
         }}
       >
-        <tspan
-          x="478.29904 480.28326 482.66364 484.64786"
-          y={149.042}
+        <path
+          d="M108.744 202.935h8.5v3.969h-8.5z"
           style={{
-            fontVariant: "normal",
-            fontWeight: 400,
-            fontSize: "3.56877px",
-            fontFamily: "Arial",
-            writingMode: "lr-tb",
-            fill: "#ff0",
+            display: "inline",
+            fill: sen_prin["LS8A"].X?"red":"black",
             fillOpacity: 1,
-            fillRule: "nonzero",
-            stroke: "none",
+            strokeWidth: 0.773999,
+            strokeLinecap: "square",
+            strokeLinejoin: "miter",
+            strokeMiterlimit: 100,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+            paintOrder: "fill markers stroke",
+          }}
+          transform="translate(365.5 -57)"
+        />
+        <text
+          xmlSpace="preserve"
+          x={108.562}
+          y={206.196}
+          style={{
+            fontSize: ".428625px",
+            display: "inline",
+            fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
+          transform="translate(365.5 -57)"
         >
-          {"LS8A"}
-        </tspan>
-      </text>
-      <text
-        xmlSpace="preserve"
-        x={479.691}
-        y={144.279}
+          <tspan
+            x={108.562}
+            y={206.196}
+            style={{
+              fontVariant: "normal",
+              fontWeight: 400,
+              fontSize: "3.56877px",
+              fontFamily: "Arial",
+              writingMode: "lr-tb",
+              fill: "#ff0",
+              fillOpacity: 1,
+              fillRule: "nonzero",
+              stroke: "none",
+              strokeWidth: 0.0357188,
+            }}
+          >
+            {"LS8A"}
+          </tspan>
+        </text>
+      </g>
+      <g
         style={{
-          fontSize: ".428625px",
           display: "inline",
-          fill: "#ff0",
-          strokeWidth: 0.0357188,
         }}
       >
-        <tspan
-          x="479.69067 481.6749 484.05527 486.03949"
-          y={144.279}
+        <path
+          d="M108.744 202.935h8.5v3.969h-8.5z"
           style={{
-            fontVariant: "normal",
-            fontWeight: 400,
-            fontSize: "3.56877px",
-            fontFamily: "Arial",
-            writingMode: "lr-tb",
-            fill: "#ff0",
+            display: "inline",
+            fill: sen_prin["LS8B"].X?"red":"black",
             fillOpacity: 1,
-            fillRule: "nonzero",
-            stroke: "none",
+            strokeWidth: 0.773999,
+            strokeLinecap: "square",
+            strokeLinejoin: "miter",
+            strokeMiterlimit: 100,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+            paintOrder: "fill markers stroke",
+          }}
+          transform="translate(371 -61.8)"
+        />
+        <text
+          xmlSpace="preserve"
+          x={108.562}
+          y={206.196}
+          style={{
+            fontSize: ".428625px",
+            display: "inline",
+            fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
+          transform="translate(371 -61.8)"
         >
-          {"LS8B"}
-        </tspan>
-      </text>
-      <text
-        xmlSpace="preserve"
-        x={479.568}
-        y={140.046}
+          <tspan
+            x={108.562}
+            y={206.196}
+            style={{
+              fontVariant: "normal",
+              fontWeight: 400,
+              fontSize: "3.56877px",
+              fontFamily: "Arial",
+              writingMode: "lr-tb",
+              fill: "#ff0",
+              fillOpacity: 1,
+              fillRule: "nonzero",
+              stroke: "none",
+              strokeWidth: 0.0357188,
+            }}
+          >
+            {"LS8B"}
+          </tspan>
+        </text>
+      </g>
+      <g
         style={{
-          fontSize: ".428625px",
           display: "inline",
-          fill: "#ff0",
-          strokeWidth: 0.0357188,
         }}
       >
-        <tspan
-          x="479.56781 481.55206 483.9324 485.91666"
-          y={140.046}
+        <path
+          d="M108.744 202.935h8.5v3.969h-8.5z"
           style={{
-            fontVariant: "normal",
-            fontWeight: 400,
-            fontSize: "3.56877px",
-            fontFamily: "Arial",
-            writingMode: "lr-tb",
-            fill: "#ff0",
+            display: "inline",
+            fill: sen_prin["LS8C"].X?"red":"black",
             fillOpacity: 1,
-            fillRule: "nonzero",
-            stroke: "none",
+            strokeWidth: 0.773999,
+            strokeLinecap: "square",
+            strokeLinejoin: "miter",
+            strokeMiterlimit: 100,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+            paintOrder: "fill markers stroke",
+          }}
+          transform="translate(371 -66.664)"
+        />
+        <text
+          xmlSpace="preserve"
+          x={108.562}
+          y={206.196}
+          style={{
+            fontSize: ".428625px",
+            display: "inline",
+            fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
+          transform="translate(371 -66.664)"
         >
-          {"LS8C"}
-        </tspan>
-      </text>
-      <text
-        xmlSpace="preserve"
-        x={478.63}
-        y={105.121}
+          <tspan
+            x={108.562}
+            y={206.196}
+            style={{
+              fontVariant: "normal",
+              fontWeight: 400,
+              fontSize: "3.56877px",
+              fontFamily: "Arial",
+              writingMode: "lr-tb",
+              fill: "#ff0",
+              fillOpacity: 1,
+              fillRule: "nonzero",
+              stroke: "none",
+              strokeWidth: 0.0357188,
+            }}
+          >
+            {"LS8C"}
+          </tspan>
+        </text>
+      </g>
+      <g
         style={{
-          fontSize: ".428625px",
           display: "inline",
-          fill: "#ff0",
-          strokeWidth: 0.0357188,
         }}
       >
-        <tspan
-          x="478.62973 480.61395 482.99432 484.97855"
-          y={105.121}
+        <path
+          d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
-            fontVariant: "normal",
-            fontWeight: 400,
-            fontSize: "3.56877px",
-            fontFamily: "Arial",
-            writingMode: "lr-tb",
-            fill: "#ff0",
+            display: "inline",
+            fill: sen_prin["LS6A"].X?"red":"black",
             fillOpacity: 1,
-            fillRule: "nonzero",
-            stroke: "none",
+            strokeWidth: 0.773999,
+            strokeLinecap: "square",
+            strokeLinejoin: "miter",
+            strokeMiterlimit: 100,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+            paintOrder: "fill markers stroke",
+          }}
+          transform="translate(365.6 -103.5)"
+        />
+        <text
+          xmlSpace="preserve"
+          x={108.562}
+          y={206.196}
+          style={{
+            fontSize: ".428625px",
+            display: "inline",
+            fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
+          transform="translate(365.6 -103.5)"
         >
-          {"LS6A"}
-        </tspan>
-      </text>
-      <text
-        xmlSpace="preserve"
-        x={479.724}
-        y={100.623}
+          <tspan
+            x={108.562}
+            y={206.196}
+            style={{
+              fontVariant: "normal",
+              fontWeight: 400,
+              fontSize: "3.56877px",
+              fontFamily: "Arial",
+              writingMode: "lr-tb",
+              fill: "#ff0",
+              fillOpacity: 1,
+              fillRule: "nonzero",
+              stroke: "none",
+              strokeWidth: 0.0357188,
+            }}
+          >
+            {"LS6A"}
+          </tspan>
+        </text>
+      </g>
+      <g
         style={{
-          fontSize: ".428625px",
           display: "inline",
-          fill: "#ff0",
-          strokeWidth: 0.0357188,
         }}
       >
-        <tspan
-          x="479.72363 481.70792 484.08838 486.07254"
-          y={100.623}
+        <path
+          d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
-            fontVariant: "normal",
-            fontWeight: 400,
-            fontSize: "3.56877px",
-            fontFamily: "Arial",
-            writingMode: "lr-tb",
-            fill: "#ff0",
+            display: "inline",
+            fill: sen_prin["LS6B"].X?"red":"black",
             fillOpacity: 1,
-            fillRule: "nonzero",
-            stroke: "none",
+            strokeWidth: 0.773999,
+            strokeLinecap: "square",
+            strokeLinejoin: "miter",
+            strokeMiterlimit: 100,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+            paintOrder: "fill markers stroke",
+          }}
+          transform="translate(371.3 -108.5)"
+        />
+        <text
+          xmlSpace="preserve"
+          x={108.562}
+          y={206.196}
+          style={{
+            fontSize: ".428625px",
+            display: "inline",
+            fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
+          transform="translate(371.3 -108.5)"
         >
-          {"LS6B"}
-        </tspan>
-      </text>
-      <text
-        xmlSpace="preserve"
-        x={486.091}
-        y={30.364}
+          <tspan
+            x={108.562}
+            y={206.196}
+            style={{
+              fontVariant: "normal",
+              fontWeight: 400,
+              fontSize: "3.56877px",
+              fontFamily: "Arial",
+              writingMode: "lr-tb",
+              fill: "#ff0",
+              fillOpacity: 1,
+              fillRule: "nonzero",
+              stroke: "none",
+              strokeWidth: 0.0357188,
+            }}
+          >
+            {"LS6B"}
+          </tspan>
+        </text>
+      </g>
+      <g
         style={{
-          fontSize: ".428625px",
           display: "inline",
-          fill: "#ff0",
-          strokeWidth: 0.0357188,
         }}
       >
-        <tspan
-          x="486.09109 488.4715 490.45569"
-          y={30.364}
+        <path
+          d="M108.744 202.935h5.7v3.969h-5.7z"
           style={{
-            fontVariant: "normal",
-            fontWeight: 400,
-            fontSize: "3.56877px",
-            fontFamily: "Arial",
-            writingMode: "lr-tb",
-            fill: "#ff0",
+            display: "inline",
+            fill: sen_prin["A71"].X?"red":"black",
             fillOpacity: 1,
-            fillRule: "nonzero",
-            stroke: "none",
+            strokeWidth: 0.773999,
+            strokeLinecap: "square",
+            strokeLinejoin: "miter",
+            strokeMiterlimit: 100,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+            paintOrder: "fill markers stroke",
+          }}
+          transform="translate(377 -170.084)"
+        />
+        <text
+          xmlSpace="preserve"
+          x={108.562}
+          y={206.196}
+          style={{
+            fontSize: ".428625px",
+            display: "inline",
+            fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
+          transform="translate(377 -170.084)"
         >
-          {"A71"}
-        </tspan>
-      </text>
-      <text
-        xmlSpace="preserve"
-        x={485.953}
-        y={54.265}
+          <tspan
+            x="108.56216 110.5464"
+            y={206.196}
+            style={{
+              fontVariant: "normal",
+              fontWeight: 400,
+              fontSize: "3.56877px",
+              fontFamily: "Arial",
+              writingMode: "lr-tb",
+              fill: "#ff0",
+              fillOpacity: 1,
+              fillRule: "nonzero",
+              stroke: "none",
+              strokeWidth: 0.0357188,
+            }}
+          >
+            {"A71"}
+          </tspan>
+        </text>    
+      </g>
+      <g
         style={{
-          fontSize: ".428625px",
           display: "inline",
-          fill: "#ff0",
-          strokeWidth: 0.0357188,
         }}
       >
-        <tspan
-          x="485.95303 488.3334 490.31763"
-          y={54.265}
+        <path
+          d="M108.744 202.935h5.7v3.969h-5.7z"
           style={{
-            fontVariant: "normal",
-            fontWeight: 400,
-            fontSize: "3.56877px",
-            fontFamily: "Arial",
-            writingMode: "lr-tb",
-            fill: "#ff0",
+            display: "inline",
+            fill: sen_prin["A73"].X?"red":"black",
             fillOpacity: 1,
-            fillRule: "nonzero",
-            stroke: "none",
+            strokeWidth: 0.773999,
+            strokeLinecap: "square",
+            strokeLinejoin: "miter",
+            strokeMiterlimit: 100,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+            paintOrder: "fill markers stroke",
+          }}
+          transform="translate(377 -146.79)"
+        />
+        <text
+          xmlSpace="preserve"
+          x={108.562}
+          y={206.196}
+          style={{
+            fontSize: ".428625px",
+            display: "inline",
+            fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
+          transform="translate(377 -146.79)"
         >
-          {"A73"}
-        </tspan>
-      </text>
+          <tspan
+            x="108.56216 110.5464"
+            y={206.196}
+            style={{
+              fontVariant: "normal",
+              fontWeight: 400,
+              fontSize: "3.56877px",
+              fontFamily: "Arial",
+              writingMode: "lr-tb",
+              fill: "#ff0",
+              fillOpacity: 1,
+              fillRule: "nonzero",
+              stroke: "none",
+              strokeWidth: 0.0357188,
+            }}
+          >
+            {"A73"}
+          </tspan>
+        </text>
+      </g>
       <path
         d="M108.744 202.935h8.07v3.969h-8.07z"
         style={{
@@ -14183,9 +14704,8 @@ return (
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS28"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14290,9 +14810,8 @@ return (
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS32"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14344,9 +14863,8 @@ return (
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS24"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14398,9 +14916,8 @@ return (
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS30"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14441,24 +14958,72 @@ return (
           >
             {"LS30"}
           </tspan>
-        </text>
+        </text>    
       </g>
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
+        }}
+      >
+        <path
+          d="M108.744 202.935h5.7v3.969h-5.7z"
+          style={{
+            display: "inline",
+            fill: sen_prin["A50"].X?"red":"black",
+            fillOpacity: 1,
+            strokeWidth: 0.773999,
+            strokeLinecap: "square",
+            strokeLinejoin: "miter",
+            strokeMiterlimit: 100,
+            strokeDasharray: "none",
+            strokeOpacity: 1,
+            paintOrder: "fill markers stroke",
+          }}
+          transform="translate(-102 -115.5)"
+        />
+        <text
+          xmlSpace="preserve"
+          x={108.562}
+          y={206.196}
+          style={{
+            fontSize: ".428625px",
+            display: "inline",
+            fill: "#ff0",
+            strokeWidth: 0.0357188,
+          }}
+          transform="translate(-102 -115.5)"
+        >
+          <tspan
+            x="108.56216 110.5464"
+            y={206.196}
+            style={{
+              fontVariant: "normal",
+              fontWeight: 400,
+              fontSize: "3.56877px",
+              fontFamily: "Arial",
+              writingMode: "lr-tb",
+              fill: "#ff0",
+              fillOpacity: 1,
+              fillRule: "nonzero",
+              stroke: "none",
+              strokeWidth: 0.0357188,
+            }}
+          >
+            {"A50"}
+          </tspan>
+        </text>    
+      </g>
+      <g
+        style={{
+          display: "inline",
         }}
       >
         <path
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS22"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14504,19 +15069,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS18"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14562,19 +15122,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS26"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14626,9 +15181,8 @@ return (
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS20"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14674,19 +15228,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.737 202.889h6.105v4.062h-6.105z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS9"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.681039,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14732,19 +15281,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS13"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14790,19 +15334,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS11"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14848,19 +15387,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.737 202.889h6.105v4.062h-6.105z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS7"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.681039,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14906,19 +15440,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS21"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -14970,9 +15499,8 @@ return (
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS10"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15024,7 +15552,7 @@ return (
           d="M108.744 202.935h8.07v3.4h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS3B"].X?"red":"black",
             fillOpacity: 1,
             strokeWidth: 0.773999,
             strokeLinecap: "square",
@@ -15077,7 +15605,7 @@ return (
           d="M108.744 202.935h8.07v3.4h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS3A"].X?"red":"black",
             fillOpacity: 1,
             strokeWidth: 0.773999,
             strokeLinecap: "square",
@@ -15130,7 +15658,7 @@ return (
           d="M108.744 203.6h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS5B"].X?"red":"black",
             fillOpacity: 1,
             strokeWidth: 0.773999,
             strokeLinecap: "square",
@@ -15183,7 +15711,7 @@ return (
           d="M104.5 199.3h8.07v3.4h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS5A"].X?"red":"black",
             fillOpacity: 1,
             strokeWidth: 0.773999,
             strokeLinecap: "square",
@@ -15230,19 +15758,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.744 202.935h8.07v3.969h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS17"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.773999,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15266,7 +15789,7 @@ return (
           transform="translate(118.37 -126.67)"
         >
           <tspan
-            x="108.56216 110.5464"
+            x={108.562}
             y={206.196}
             style={{
               fontVariant: "normal",
@@ -15341,19 +15864,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.783 202.975h9.998v3.89h-9.998z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS15B"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.85292,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15399,19 +15917,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.782 202.974h9.946v3.892h-9.946z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS15A"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.850908,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15420,7 +15933,7 @@ return (
             strokeOpacity: 1,
             paintOrder: "fill markers stroke",
           }}
-          transform="translate(117.998 -177.678)"
+          transform="translate(122.498 -177.678)"
         />
         <text
           xmlSpace="preserve"
@@ -15432,7 +15945,7 @@ return (
             fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
-          transform="translate(117.998 -177.678)"
+          transform="translate(122.498 -177.678)"
         >
           <tspan
             x="108.28049 110.26473"
@@ -15457,19 +15970,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.781 202.973h9.894v3.894h-9.894z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS19B"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.848891,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15515,20 +16023,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
-          d="M108.782 202.974h9.946v3.892h-9.946z"
+          d="M104.5 199.3h8.07v3.4h-8.07z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS19A"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
-            strokeWidth: 0.850908,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
             strokeMiterlimit: 100,
@@ -15536,12 +16038,12 @@ return (
             strokeOpacity: 1,
             paintOrder: "fill markers stroke",
           }}
-          transform="translate(251.192 -150.095)"
+          transform="translate(251.192 -141.6)"
         />
         <text
           xmlSpace="preserve"
-          x={108.28}
-          y={206.196}
+          x={100}
+          y={208}
           style={{
             fontSize: ".428625px",
             display: "inline",
@@ -15551,12 +16053,12 @@ return (
           transform="translate(251.192 -150.095)"
         >
           <tspan
-            x="108.28049 110.26473"
-            y={206.196}
+            x={104.5}
+            y={210.5}
             style={{
               fontVariant: "normal",
               fontWeight: 400,
-              fontSize: "3.56877px",
+              fontSize: "2.6px",
               fontFamily: "Arial",
               writingMode: "lr-tb",
               fill: "#ff0",
@@ -15573,19 +16075,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.781 202.973h9.894v3.894h-9.894z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS23B"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.848891,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15631,19 +16128,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.782 202.974h9.946v3.892h-9.946z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS23A"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.850908,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15689,19 +16181,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.737 202.929h7.758v3.983h-7.758z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS16"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.760219,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15906,19 +16393,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.781 202.973h9.894v3.894h-9.894z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS12B"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.848891,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15964,19 +16446,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.782 202.974h9.946v3.892h-9.946z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS12A"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.850908,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -15985,7 +16462,7 @@ return (
             strokeOpacity: 1,
             paintOrder: "fill markers stroke",
           }}
-          transform="translate(185.564 -108.187)"
+          transform="translate(181 -108.187)"
         />
         <text
           xmlSpace="preserve"
@@ -16000,7 +16477,7 @@ return (
           transform="translate(185.564 -108.187)"
         >
           <tspan
-            x="108.28049 110.26473"
+            x={103.7}
             y={206.196}
             style={{
               fontVariant: "normal",
@@ -16022,19 +16499,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.782 202.974h9.946v3.892h-9.946z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS14A"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.850908,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -16043,7 +16515,7 @@ return (
             strokeOpacity: 1,
             paintOrder: "fill markers stroke",
           }}
-          transform="translate(185.341 -58.332)"
+          transform="translate(181 -58.332)"
         />
         <text
           xmlSpace="preserve"
@@ -16055,7 +16527,7 @@ return (
             fill: "#ff0",
             strokeWidth: 0.0357188,
           }}
-          transform="translate(185.341 -58.332)"
+          transform="translate(181 -58.332)"
         >
           <tspan
             x="108.28049 110.26473"
@@ -16080,19 +16552,14 @@ return (
       <g
         style={{
           display: "inline",
-          stroke: "#fff",
-          strokeWidth: 0.333344,
-          strokeDasharray: "none",
-          strokeOpacity: 1,
         }}
       >
         <path
           d="M108.782 202.974h9.946v3.892h-9.946z"
           style={{
             display: "inline",
-            fill: "red",
+            fill: sen_prin["LS14B"].X?"red":"black",
             fillOpacity: 1,
-            stroke: "red",
             strokeWidth: 0.850908,
             strokeLinecap: "square",
             strokeLinejoin: "miter",
@@ -17055,112 +17522,6 @@ return (
         strokeOpacity: 1,
       }}
       transform="translate(8.37 7.15)"
-    />
-    <path
-      d="m19.894 15.397-6.108-1.446 6.108-1.554v3"
-      style={{
-        display: "inline",
-        fill: "#fff",
-        fillOpacity: 1,
-        stroke: "#fff",
-        strokeWidth: 0.0556875,
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeMiterlimit: 10,
-        strokeDasharray: "none",
-        strokeOpacity: 1,
-      }}
-      transform="translate(-4.233 -6.35)"
-    />
-    <text
-      xmlSpace="preserve"
-      x={21.285}
-      y={15.133}
-      style={{
-        fontSize: "3.175px",
-        display: "inline",
-        fill: "#fff",
-        fillOpacity: 1,
-        stroke: "#fff",
-        strokeWidth: 0.1,
-        strokeLinecap: "square",
-        strokeLinejoin: "miter",
-        strokeMiterlimit: 100,
-        strokeDasharray: "none",
-        strokeDashoffset: 0,
-        strokeOpacity: 1,
-        paintOrder: "markers stroke fill",
-      }}
-      transform="translate(-4.233 -6.35)"
-    >
-      <tspan
-        x={21.285}
-        y={15.133}
-        style={{
-          fontStyle: "normal",
-          fontVariant: "normal",
-          fontWeight: 400,
-          fontStretch: "normal",
-          fontFamily: "Arial",
-          InkscapeFontSpecification: "Arial",
-          strokeWidth: 0.1,
-        }}
-      >
-        {"A FLORES SENTIDO DESCENDENTE"}
-      </tspan>
-    </text>
-    <text
-      xmlSpace="preserve"
-      x={382.97}
-      y={13.016}
-      style={{
-        fontSize: "3.175px",
-        display: "inline",
-        fill: "#fff",
-        fillOpacity: 1,
-        stroke: "#fff",
-        strokeWidth: 0.1,
-        strokeLinecap: "square",
-        strokeLinejoin: "miter",
-        strokeMiterlimit: 100,
-        strokeDasharray: "none",
-        strokeDashoffset: 0,
-        strokeOpacity: 1,
-        paintOrder: "markers stroke fill",
-      }}
-      transform="translate(30.692 185.738)"
-    >
-      <tspan
-        x={382.97}
-        y={13.016}
-        style={{
-          fontStyle: "normal",
-          fontVariant: "normal",
-          fontWeight: 400,
-          fontStretch: "normal",
-          fontFamily: "Arial",
-          InkscapeFontSpecification: "Arial",
-          strokeWidth: 0.1,
-        }}
-      >
-        {"A CIUDADELA SENTIDO ASCENDENTE"}
-      </tspan>
-    </text>
-    <path
-      d="m446.91 13.28 6.107-1.446-6.108-1.554v3"
-      style={{
-        display: "inline",
-        fill: "#fff",
-        fillOpacity: 1,
-        stroke: "#fff",
-        strokeWidth: 0.0556875,
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeMiterlimit: 10,
-        strokeDasharray: "none",
-        strokeOpacity: 1,
-      }}
-      transform="translate(30.692 185.738)"
     />
   </svg>
   );

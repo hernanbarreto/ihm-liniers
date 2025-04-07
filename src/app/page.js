@@ -53,6 +53,7 @@ export default function Home() {
   const [ArrayCDV, setArrayCDV] = useState({});
   const [ArrayMDC, setArrayMDC] = useState({});
   const [ArraySEN_MAN, setArraySEN_MAN] = useState({});
+  const [ArraySEN_PRIN, setArraySEN_PRIN] = useState({});
 
   const router = useRouter();
   
@@ -141,6 +142,28 @@ export default function Home() {
                   };
                 });
               setArraySEN_MAN(prev => ({ ...prev, ...updatedSEN_MANs }));  
+            }else{
+              if (change.table === 'sen_prin') {
+                const updatedSEN_PRINs = {};
+                  change.affectedRows.forEach(row => {
+                    const newV = row.after;
+                    updatedSEN_PRINs[newV.SEN] = {
+                      R: newV.R,
+                      RF: newV.RF,
+                      G: newV.G,
+                      GF: newV.GF,
+                      Y: newV.Y,
+                      YF: newV.YF,
+                      YY: newV.YY,
+                      YYF: newV.YYF,
+                      SD: newV.SD,
+                      BD: newV.BD,
+                      X: newV.X,
+                      RUTA: newV.RUTA,
+                    };
+                  });
+                setArraySEN_PRIN(prev => ({ ...prev, ...updatedSEN_PRINs }));  
+              }
             }
           }
         }
@@ -288,11 +311,47 @@ export default function Home() {
     }
   }, [userRole]);
 
+
   useEffect(() => {
-    if ((Object.keys(ArrayCDV).length)&&(Object.keys(ArrayMDC).length)&&(Object.keys(ArraySEN_MAN).length)){
+    if (userRole === 'operador'){  
+        const getData = async () => {
+          try {
+            const response = await fetch("/api/get-states-sen_prin", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(),
+            });
+  
+            const data = await response.json();
+
+            if (data.exists) {
+              setArraySEN_PRIN(prev => {
+                const newState = { ...prev, ...data.data };
+                return newState;
+              });
+            } else {
+              handleLogout();
+            }
+          } catch (error) {
+            console.error("Error datos:", error);
+            handleLogout();
+          }
+        };
+  
+        getData();
+    }else{
+      clearOperador();
+    }
+  }, [userRole]);
+
+
+  useEffect(() => {
+    if ((Object.keys(ArrayCDV).length)&&(Object.keys(ArrayMDC).length)&&(Object.keys(ArraySEN_MAN).length)&&(Object.keys(ArraySEN_PRIN).length)){
       setShowMimico(true);
     }
-  }, [ArrayCDV, ArrayMDC, ArraySEN_MAN]);
+  }, [ArrayCDV, ArrayMDC, ArraySEN_MAN, ArraySEN_PRIN]);
 
 
   const useBreakpoints = () => {
@@ -325,48 +384,58 @@ export default function Home() {
       text: "¿Está seguro que desea salir del sistema?",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d32f2f',
-      cancelButtonColor: '#5c6bc0',
+      confirmButtonColor: '#424242', // gris oscuro
+      cancelButtonColor: '#757575',  // gris más claro
       confirmButtonText: 'Sí, salir',
       cancelButtonText: 'Cancelar',
-      backdrop: `
-        rgba(0,0,0,0.7)
-        url("/images/exit-animation.gif")
-        center top
-        no-repeat
-      `
+      background: '#121212', // fondo negro
+      color: '#ffffff',      // texto blanco
+      customClass: {
+        popup: 'arial-font',
+        title: 'arial-font',
+        htmlContainer: 'arial-font',
+        confirmButton: 'arial-font',
+        cancelButton: 'arial-font'
+      },
+      backdrop: true // sin gif ni animaciones
     }).then((result) => {
       if (result.isConfirmed) {
         handleLogout();
       }
     });
   };
-
+  
   const clearOperador = () => {
     setShowMimico(false);
     setArrayCDV({});
     setArrayMDC({});
     setArraySEN_MAN({});
+    setArraySEN_PRIN({});
   };
 
   if (!isAuthenticated) return null;
 
   const columns = [
     { width: 20, label: 'Número', dataKey: 'number' },
-    { width: 50, label: 'Fecha', dataKey: 'date' },
-    { width: 50, label: 'Hora', dataKey: 'time', numeric: true },
-    { width: 110, label: 'Mensaje', dataKey: 'message' },
+    { width: 20, label: 'Fecha', dataKey: 'date' },
+    { width: 20, label: 'Hora', dataKey: 'time', numeric: true },
+    { width: 170, label: 'Mensaje', dataKey: 'message' },
     { width: 50, label: 'Estado', dataKey: 'status' },
   ];
 
   const alarms = [
-    { id: 1, number: "A1", date: "2025-03-09", time: "12:00 PM", message: "Falla en el sistema", status: "Activo" },
-    { id: 2, number: "A2", date: "2025-03-09", time: "12:30 PM", message: "Movimiento no esperado", status: "Resuelto" },
-    { id: 3, number: "A3", date: "2025-03-09", time: "01:00 PM", message: "Problema de comunicación", status: "Activo" },
-    { id: 4, number: "A4", date: "2025-03-09", time: "01:00 PM", message: "Problema de comunicación", status: "Activo" }
+    { id: 1, number: "", date: "", time: "", message: "", status: "" },
+    { id: 2, number: "", date: "", time: "", message: "", status: "" },
+    { id: 3, number: "", date: "", time: "", message: "", status: "" },
+    { id: 4, number: "", date: "", time: "", message: "", status: "" },
+    { id: 5, number: "", date: "", time: "", message: "", status: "" },
+    { id: 6, number: "", date: "", time: "", message: "", status: "" },
+    { id: 7, number: "", date: "", time: "", message: "", status: "" },
+    { id: 8, number: "", date: "", time: "", message: "", status: "" }
   ];
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    borderRight: '1px solid rgba(224, 224, 224, 1)',
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
       color: theme.palette.common.white,
@@ -401,7 +470,7 @@ export default function Home() {
     return (
       <StyledTableRow>
         {columns.map((column) => (
-          <StyledTableCell key={column.dataKey} variant="head" align={column.numeric || false ? 'right' : 'left'} style={{ width: column.width }}>
+          <StyledTableCell key={column.dataKey} variant="head" align="center" style={{ width: column.width }}>
             {column.label}
           </StyledTableCell>
         ))}
@@ -610,11 +679,11 @@ onContextMenu={(e) => {
           <Grid item>
             <Tooltip title="Salir">
               <IconButton 
-                color="error" 
+                color="inherit" 
                 onClick={handleLogoutClick}
                 sx={{ 
                   backgroundColor: 'rgba(255,255,255,0.1)', 
-                  '&:hover': { backgroundColor: 'rgba(255,0,0,0.3)' },
+                  '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' },
                   padding: isSm ? '8px' : '12px'
                 }}
               >
@@ -656,6 +725,7 @@ onContextMenu={(e) => {
             cdv_prin={ArrayCDV} 
             mdc={ArrayMDC} 
             sen_man={ArraySEN_MAN}
+            sen_prin={ArraySEN_PRIN}
           />
         ) : userRole === "admin" ? (
           <Box sx={{ width: "100%", overflow: "auto", height: "100%" }}>

@@ -46,8 +46,8 @@ export default function LoginPage() {
       sx={{
         "& *": {
           userSelect: 'none',
-          "-webkit-user-select": 'none',
-          "-moz-user-select": 'none',
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
         }
       }}
     >
